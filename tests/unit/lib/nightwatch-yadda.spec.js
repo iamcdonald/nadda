@@ -21,6 +21,8 @@ describe('nightwatch-yadda', function () {
         };
         stubs['./utils/write-settings-file'] = sinon.stub();
         stubs['./utils/copy-file-with-replacements'] = sinon.stub();
+        stubs['./options/localisation'] = {ENGLISH: 'English'};
+        stubs['./options/browser'] = {CHROME: 'Chrome'};
         stubs.nightwatch = {
             runner: sinon.stub()
         };
@@ -164,6 +166,18 @@ describe('nightwatch-yadda', function () {
             });
         });
 
+    });
+
+    describe('LOCALISATIONS', function () {
+        it('should have localisation options available', function () {
+            assert.deepEqual(testee.LOCALISATIONS, stubs['./options/localisation']);
+        });
+    });
+
+    describe('BROWSERS', function () {
+        it('should have browser options available', function () {
+            assert.deepEqual(testee.BROWSERS, stubs['./options/browser']);
+        });
     });
 
 });

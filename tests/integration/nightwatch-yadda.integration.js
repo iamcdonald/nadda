@@ -113,9 +113,7 @@ describe('nightwatch-yadda integration', function () {
             stubs = {},
             featuresPath = 'tests/integration/fixture/**/*.feature',
             stepsPath = 'tests/integration/fixture/**/*.steps.js',
-            localisation = 'English',
             settingsPath = './tests/integration/fixture/ext-nightwatch.json',
-            env = 'IE',
             nightwatchCallback;
 
         beforeEach(function () {
@@ -134,9 +132,9 @@ describe('nightwatch-yadda integration', function () {
             testee({
                 features: featuresPath,
                 steps: stepsPath,
-                localisation: localisation,
+                localisation: testee.LOCALISATIONS.ENGLISH,
                 settings: settingsPath,
-                env: env
+                env: testee.BROWSERS.IE
             });
             nightwatchCallback = stubs.nightwatch.runner.args[0][1];
         });
@@ -194,7 +192,7 @@ describe('nightwatch-yadda integration', function () {
                 re;
             re = new RegExp(stepsPath.replace(/(\/|\*)/g, '\\$1'));
             assert(fileContents.match(re));
-            re = new RegExp(localisation);
+            re = new RegExp(testee.LOCALISATIONS.ENGLISH);
             assert(fileContents.match(re));
         });
 
@@ -202,7 +200,7 @@ describe('nightwatch-yadda integration', function () {
             assert.equal(stubs.nightwatch.runner.callCount, 1);
             assert.deepEqual(stubs.nightwatch.runner.args[0][0], {
                 config: path.resolve(__dirname, '../../lib/sandbox/nightwatch.json'),
-                env: env
+                env: testee.BROWSERS.IE
             });
         });
 
