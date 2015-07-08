@@ -1,6 +1,6 @@
 Feature: ACCESS THE INTERWEBZ AND DO A SEARCH
 
-Scenario: Google Search for [Type]
+Scenario: DuckDuckGo Search for [Type]
 
     Given I visit http://www.duckduckgo.com
     When I type in [Type]
