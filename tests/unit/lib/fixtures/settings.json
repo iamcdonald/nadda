@@ -1,0 +1,16 @@
+{
+  "output_folder" : "reports",
+
+  "selenium" : {
+    "start_process" : true,
+    "log_path" : "",
+    "host" : "127.0.0.1",
+    "port" : 4444,
+    "cli_args" : {
+    }
+  },
+  "test_settings": {
+    "PHANTOMJS": {
+    }
+  }
+}

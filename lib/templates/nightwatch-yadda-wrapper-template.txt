@@ -1,0 +1,17 @@
+var fs = require('fs'),
+	path = require('path'),
+	Yadda = require('yadda'),
+	yaddaInstance = require(path.resolve('lib/sandbox/yadda-lib')),
+	featureParser = new Yadda.parsers.FeatureParser(),
+    feature = featureParser.parse(fs.readFileSync('{feature_location}', 'UTF-8'));
+
+for (var j = 0, sl = feature.scenarios.length; j < sl; j++) {
+	scenario = feature.scenarios[j];
+	module.exports[scenario.title] = (function () {
+		var lockedScenario = scenario;
+		return function (browser) {
+        	lockedScenario.steps.push('close_browser');
+        	yaddaInstance.yadda(lockedScenario.steps, {browser: browser});
+		};
+    }());
+}

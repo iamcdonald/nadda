@@ -1,0 +1,47 @@
+{
+  "output_folder" : "reports",
+  "custom_commands_path" : "",
+  "custom_assertions_path" : "",
+  "page_objects_path" : "",
+  "globals_path" : "",
+
+  "selenium" : {
+    "start_process" : true,
+    "log_path" : "",
+    "host" : "127.0.0.1",
+    "port" : 4444,
+    "cli_args" : {
+    }
+  },
+
+  "test_settings" : {
+    "CHROME" : {
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true
+      }
+    },
+    "PHANTOMJS" : {
+      "desiredCapabilities" : {
+        "browserName" : "phantomjs",
+        "javascriptEnabled" : true,
+        "acceptSslCerts" : true
+      }
+    },
+    "IE" : {
+      "desiredCapabilities" : {
+        "browserName" : "internet explorer",
+        "javascriptEnabled" : true,
+        "acceptSslCerts" : true
+      }
+    },
+    "FIREFOX" : {
+      "desiredCapabilities" : {
+        "browserName" : "firfox",
+        "javascriptEnabled" : true,
+        "acceptSslCerts" : true
+      }
+    }
+  }
+}
