@@ -6,7 +6,7 @@ var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
     rimraf = require('rimraf'),
-    copyFileWithReplacements = require('../../../../lib/copy-file-with-replacements'),
+    copyFileWithReplacements = require('../../../../lib/utils/copy-file-with-replacements'),
     proxyquire = require('proxyquire').noCallThru(),
     sinon = require('sinon');
 

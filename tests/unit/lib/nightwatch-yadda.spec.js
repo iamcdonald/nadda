@@ -13,13 +13,14 @@ describe('nightwatch-yadda', function () {
     var testee,
         stubs = {},
         spies = {};
+
     stubs['object-merge'] = sinon.spy(objectMerge);
     beforeEach(function () {
         stubs.mkdirp = {
             sync: sinon.stub()
         };
-        stubs['./merge-settings-to-file'] = sinon.stub();
-        stubs['./copy-file-with-replacements'] = sinon.stub();
+        stubs['./utils/write-settings-file'] = sinon.stub();
+        stubs['./utils/copy-file-with-replacements'] = sinon.stub();
         stubs.nightwatch = {
             runner: sinon.stub()
         };
@@ -64,19 +65,19 @@ describe('nightwatch-yadda', function () {
         testee({
             settings: 'ext-nw.json'
         });
-        assert.equal(stubs['./merge-settings-to-file'].callCount, 1);
-        assert.equal(stubs['./merge-settings-to-file'].args[0][0], path.resolve(__dirname, '../../../lib/nightwatch-default.json'));
-        assert.equal(stubs['./merge-settings-to-file'].args[0][1], 'ext-nw.json');
-        assert.equal(stubs['./merge-settings-to-file'].args[0][2], path.resolve(__dirname, '../../../lib/sandbox/nightwatch.json'));
+        assert.equal(stubs['./utils/write-settings-file'].callCount, 1);
+        assert.equal(stubs['./utils/write-settings-file'].args[0][0], path.resolve(__dirname, '../../../lib/nightwatch-default.json'));
+        assert.equal(stubs['./utils/write-settings-file'].args[0][1], 'ext-nw.json');
+        assert.equal(stubs['./utils/write-settings-file'].args[0][2], path.resolve(__dirname, '../../../lib/sandbox/nightwatch.json'));
     });
 
     it('should call copyFileWithReplacements to copy steps-lib over with correct replacement', function () {
         testee({
             steps: 'path/to/steps/**'
         });
-        assert.equal(stubs['./copy-file-with-replacements'].args[0][0], path.resolve(__dirname, '../../../lib/templates/yadda-lib-template.txt'));
-        assert.equal(stubs['./copy-file-with-replacements'].args[0][1], path.resolve(__dirname, '../../../lib/sandbox/yadda-lib.js'));
-        assert.deepEqual(stubs['./copy-file-with-replacements'].args[0][2], {
+        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][0], path.resolve(__dirname, '../../../lib/templates/yadda-lib-template.txt'));
+        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][1], path.resolve(__dirname, '../../../lib/sandbox/yadda-lib.js'));
+        assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[0][2], {
             '{steps_location}': JSON.stringify('path/to/steps/**'),
             '{localisation}': null
         });
@@ -124,9 +125,9 @@ describe('nightwatch-yadda', function () {
             features: 'path/to/steps/**'
         });
         featuresArray.forEach(function (feature, idx) {
-            assert.equal(stubs['./copy-file-with-replacements'].args[idx + 1][0], path.resolve(__dirname, '../../../lib/templates/nightwatch-yadda-wrapper-template.txt'));
-            assert.equal(stubs['./copy-file-with-replacements'].args[idx + 1][1], path.resolve('lib/sandbox/features/', path.dirname(feature),  features[feature] + '.js'));
-            assert.deepEqual(stubs['./copy-file-with-replacements'].args[idx + 1][2], {
+            assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][0], path.resolve(__dirname, '../../../lib/templates/nightwatch-yadda-wrapper-template.txt'));
+            assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][1], path.resolve('lib/sandbox/features/', path.dirname(feature),  features[feature] + '.js'));
+            assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[idx + 1][2], {
                 '{feature_location}': path.resolve(feature)
             });
         });

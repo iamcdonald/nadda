@@ -15,7 +15,7 @@ describe('copy-file-with-replacement', function () {
             readFileSync: sinon.stub().returns('some test with\na\nword - (find)\n to replace'),
             writeFileSync: sinon.stub()
         };
-        testee = proxyquire('../../../lib/copy-file-with-replacements', stubs);
+        testee = proxyquire('../../../../lib/utils/copy-file-with-replacements', stubs);
     });
 
     it('should call readFileSync with the file location and \'UTF-8\'', function () {
