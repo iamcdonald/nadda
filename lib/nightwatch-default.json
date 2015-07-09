@@ -15,28 +15,28 @@
   },
 
   "test_settings" : {
-    "CHROME" : {
+    "__CHROME__" : {
       "desiredCapabilities": {
         "browserName": "chrome",
         "javascriptEnabled": true,
         "acceptSslCerts": true
       }
     },
-    "PHANTOMJS" : {
+    "__PHANTOMJS__" : {
       "desiredCapabilities" : {
         "browserName" : "phantomjs",
         "javascriptEnabled" : true,
         "acceptSslCerts" : true
       }
     },
-    "IE" : {
+    "__IE__" : {
       "desiredCapabilities" : {
         "browserName" : "internet explorer",
         "javascriptEnabled" : true,
         "acceptSslCerts" : true
       }
     },
-    "FIREFOX" : {
+    "__FIREFOX__" : {
       "desiredCapabilities" : {
         "browserName" : "firfox",
         "javascriptEnabled" : true,

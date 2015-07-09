@@ -12,10 +12,13 @@ describe('options/browser', function () {
     });
 
     it('should have all browser environment values', function () {
-        for (var browser in settings.test_settings) {
-            if (settings.test_settings.hasOwnProperty(browser)) {
-                assert.equal(testee[browser.toUpperCase()], browser);
+        var hasOptions = false;
+        for (var browser in testee) {
+            if (testee.hasOwnProperty(browser)) {
+                hasOptions = true;
+                assert(settings.test_settings[testee[browser]]);
             }
         }
+        assert(hasOptions);
     });
 });

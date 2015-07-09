@@ -12,10 +12,13 @@ describe('options/localisation', function () {
     });
 
     it('should have all yadda localisation values', function () {
-        for (var l in yadda.localisation) {
-            if (yadda.localisation.hasOwnProperty(l)) {
-                assert.equal(testee[l.toUpperCase()], l);
+        var hasOptions = false;
+        for (var localisation in testee) {
+            if (testee.hasOwnProperty(localisation)) {
+                hasOptions = true;
+                assert(yadda.localisation[testee[localisation]]);
             }
         }
+        assert(hasOptions);
     });
 });
