@@ -71,7 +71,7 @@ describe('merge-settings-to-file', function () {
                 path.resolve(__dirname, '../fixtures/ext-settings.json'),
                 'write/location/settings.json');
         var newContent = JSON.parse(stubs.fs.writeFileSync.args[0][1]);
-        assert.equal(newContent.test_settings.PHANTOMJS['phantomjs.binary.path'], path.resolve('node_modules/phantomjs/bin/phantomjs'));
+        assert.equal(newContent.test_settings.__PHANTOMJS__['phantomjs.binary.path'], path.resolve('node_modules/phantomjs/bin/phantomjs'));
     });
 
     it('should merge in external file', function () {

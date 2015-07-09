@@ -152,8 +152,7 @@ describe('nightwatch-yadda integration', function () {
                 assert(settings.selenium.cli_args['webdriver.ie.driver']);
             }
             assert.equal(settings.selenium.port, 6655);
-            assert(settings.test_settings);
-            assert.equal(settings.test_settings.default.selenium_port, 6655);
+            assert(settings.test_settings.default);
         });
 
         it('should create a file for each feature with the correct contents', function () {

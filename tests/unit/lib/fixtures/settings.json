@@ -10,7 +10,7 @@
     }
   },
   "test_settings": {
-    "PHANTOMJS": {
+    "__PHANTOMJS__": {
     }
   }
 }

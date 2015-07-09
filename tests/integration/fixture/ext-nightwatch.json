@@ -16,14 +16,6 @@
 
   "test_settings" : {
     "default" : {
-      "launch_url" : "http://localhost",
-      "selenium_port"  : 6655,
-      "selenium_host"  : "localhost",
-      "silent": true,
-      "screenshots" : {
-        "enabled" : false,
-        "path" : ""
-      },
       "desiredCapabilities": {
         "browserName": "chrome",
         "javascriptEnabled": true,
