@@ -16,8 +16,8 @@ describe('nightwatch-yadda e2e', function () {
 
     before(function () {
         processExitStub = sinon.stub(process, 'exit');
-        require('../../lib/driver-setup');
-        nightwatchYadda = require('../../lib/nightwatch-yadda');
+        require('../../../lib/driver-setup');
+        nightwatchYadda = require('../../../lib/nightwatch-yadda');
     });
 
     after(function () {
@@ -36,14 +36,14 @@ describe('nightwatch-yadda e2e', function () {
         this.timeout(100000);
         assert.doesNotThrow(function () {
             nightwatchYadda({
-                features: 'tests/e2e/fixture/**/*.feature',
-                steps: 'tests/e2e/fixture/**/*.steps.js',
+                features: 'tests/e2e/lib/fixture/**/*.feature',
+                steps: 'tests/e2e/lib/fixture/**/*.steps.js',
                 localisation: nightwatchYadda.LOCALISATIONS.ENGLISH,
-                config: 'tests/e2e/fixture/nightwatch.json',
+                config: 'tests/e2e/lib/fixture/nightwatch.json',
                 env: nightwatchYadda.BROWSERS.PHANTOMJS
             }).finally(function () {
-                assert.equal(glob.sync('tests/e2e/reports/**/*.xml').length, 1);
-                rimraf.sync(path.resolve('tests/e2e/reports'));
+                assert.equal(glob.sync('tests/e2e/lib/reports/**/*.xml').length, 1);
+                rimraf.sync(path.resolve('tests/e2e/lib/reports'));
                 done();
             });
         });
