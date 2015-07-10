@@ -13,10 +13,10 @@ describe('options/localisation', function () {
 
     it('should have all yadda localisation values', function () {
         var hasOptions = false;
-        for (var localisation in testee) {
-            if (testee.hasOwnProperty(localisation)) {
+        for (var localisation in testee.options) {
+            if (testee.options.hasOwnProperty(localisation)) {
                 hasOptions = true;
-                assert(yadda.localisation[testee[localisation]]);
+                assert(yadda.localisation[testee.options[localisation]]);
             }
         }
         assert(hasOptions);

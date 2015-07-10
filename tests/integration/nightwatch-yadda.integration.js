@@ -1,4 +1,4 @@
-/* global describe, it, beforeEach, afterEach */
+/* global before, after, describe, it, beforeEach, afterEach */
 
 'use strict';
 
@@ -10,6 +10,17 @@ var assert = require('assert'),
     sinon = require('sinon');
 
 describe('nightwatch-yadda integration', function () {
+
+    var processExitStub = sinon.stub(process, 'exit');
+    before(function () {
+        console.log('bef');
+        require('../../lib/driver-setup');
+    });
+
+    after(function () {
+        fs.unlinkSync('lib/nightwatch-default.json');
+        processExitStub.restore();
+    });
 
     describe('default options', function () {
         var testee,
@@ -93,7 +104,7 @@ describe('nightwatch-yadda integration', function () {
             assert.equal(stubs.nightwatch.runner.callCount, 1);
             assert.deepEqual(stubs.nightwatch.runner.args[0][0], {
                 config:path.resolve(__dirname, '../../lib/sandbox/nightwatch.json'),
-                env: 'PHANTOMJS'
+                env: testee.BROWSERS.PHANTOMJS
             });
         });
 
@@ -113,7 +124,7 @@ describe('nightwatch-yadda integration', function () {
             stubs = {},
             featuresPath = 'tests/integration/fixture/**/*.feature',
             stepsPath = 'tests/integration/fixture/**/*.steps.js',
-            settingsPath = './tests/integration/fixture/ext-nightwatch.json',
+            configPath = './tests/integration/fixture/ext-nightwatch.json',
             nightwatchCallback;
 
         beforeEach(function () {
@@ -133,7 +144,7 @@ describe('nightwatch-yadda integration', function () {
                 features: featuresPath,
                 steps: stepsPath,
                 localisation: testee.LOCALISATIONS.ENGLISH,
-                settings: settingsPath,
+                config: configPath,
                 env: testee.BROWSERS.IE
             });
             nightwatchCallback = stubs.nightwatch.runner.args[0][1];

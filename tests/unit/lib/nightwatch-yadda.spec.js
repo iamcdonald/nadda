@@ -3,7 +3,7 @@
 'use strict';
 
 var assert = require('assert'),
-    proxyquire = require('proxyquire'),
+    proxyquire = require('proxyquire').noCallThru(),
     path = require('path'),
     sinon = require('sinon'),
     objectMerge = require('object-merge');
@@ -19,10 +19,17 @@ describe('nightwatch-yadda', function () {
         stubs.mkdirp = {
             sync: sinon.stub()
         };
-        stubs['./utils/write-settings-file'] = sinon.stub();
+        stubs['./utils/merge-settings-file'] = sinon.stub();
         stubs['./utils/copy-file-with-replacements'] = sinon.stub();
-        stubs['./options/localisation'] = {ENGLISH: 'English'};
-        stubs['./options/browser'] = {CHROME: 'Chrome'};
+        stubs['./utils/process-options'] = sinon.stub({x: function () {}}, 'x', function (options) {
+            return options || {};
+        });
+        stubs['./options/localisation'] = {
+            options: {ENGLISH: 'English'}
+        };
+        stubs['./options/browser'] = {
+            options: {PHANTOMJS: '__PHANTOMJS__'}
+        };
         stubs.nightwatch = {
             runner: sinon.stub()
         };
@@ -38,50 +45,49 @@ describe('nightwatch-yadda', function () {
                 resolve: stubs.deferResolve
             })
         };
+        stubs['./paths'] = {
+            NY_PATH: '/',
+            PROJ_PATH: '/'
+        };
         testee = proxyquire('../../../lib/nightwatch-yadda', stubs);
     });
 
-    it('should merges default and passed in options', function () {
+    it('calls processOptions with passed in options', function () {
         var options = {
             features: 'path/to/features',
             steps: 'path/to/steps',
             tags: ['some', 'tags']
         };
         testee(options);
-        assert.equal(stubs['object-merge'].callCount, 1);
-        assert.equal(stubs['object-merge'].args[0][0].features, '**/*.feature');
-        assert.equal(stubs['object-merge'].args[0][0].steps, '**/*.steps.js');
-        assert.deepEqual(stubs['object-merge'].args[0][0].tags, []);
-        assert.equal(stubs['object-merge'].args[0][1].features, options.features);
-        assert.equal(stubs['object-merge'].args[0][1].steps, options.steps);
-        assert.deepEqual(stubs['object-merge'].args[0][1].tags, options.tags);
+        assert.equal(stubs['./utils/process-options'].callCount, 1);
+        assert.deepEqual(stubs['./utils/process-options'].args[0][0], options);
     });
 
     it('creates sandbox and sandbox/features', function () {
         testee();
         assert.equal(stubs.mkdirp.sync.callCount, 1);
-        assert.equal(stubs.mkdirp.sync.args[0][0], path.resolve(__dirname, '../../../lib/sandbox/features'));
+        assert.equal(stubs.mkdirp.sync.args[0][0], '/sandbox/features');
     });
 
-    it('calls mergeSettingsToFile with correct args to set up nightwatch.json file', function () {
+    it('calls writeSettingsFile with correct args to set up nightwatch.json file', function () {
         testee({
-            settings: 'ext-nw.json'
+            config: 'ext-nw.json'
         });
-        assert.equal(stubs['./utils/write-settings-file'].callCount, 1);
-        assert.equal(stubs['./utils/write-settings-file'].args[0][0], path.resolve(__dirname, '../../../lib/nightwatch-default.json'));
-        assert.equal(stubs['./utils/write-settings-file'].args[0][1], 'ext-nw.json');
-        assert.equal(stubs['./utils/write-settings-file'].args[0][2], path.resolve(__dirname, '../../../lib/sandbox/nightwatch.json'));
+        assert.equal(stubs['./utils/merge-settings-file'].callCount, 1);
+        assert.equal(stubs['./utils/merge-settings-file'].args[0][0], 'ext-nw.json');
     });
 
-    it('should call copyFileWithReplacements to copy steps-lib over with correct replacement', function () {
-        testee({
-            steps: 'path/to/steps/**'
-        });
-        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][0], path.resolve(__dirname, '../../../lib/templates/yadda-lib-template.txt'));
-        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][1], path.resolve(__dirname, '../../../lib/sandbox/yadda-lib.js'));
+    it('calls copyFileWithReplacements to copy steps-lib over with correct replacement', function () {
+        var options = {
+            steps: 'path/to/steps/**',
+            localisation: null
+        };
+        testee(options);
+        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][0], '/templates/yadda-lib-template.txt');
+        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][1], '/sandbox/yadda-lib.js');
         assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[0][2], {
-            '{steps_location}': JSON.stringify('path/to/steps/**'),
-            '{localisation}': null
+            '{steps_location}': JSON.stringify(options.steps),
+            '{localisation}': options.localisation
         });
     });
 
@@ -104,7 +110,7 @@ describe('nightwatch-yadda', function () {
             features: 'path/to/features/**'
         });
         featuresArray.forEach(function (feature, idx) {
-            assert.equal(stubs.mkdirp.sync.args[idx + 1][0], path.resolve('lib/sandbox/features', path.dirname(feature)));
+            assert.equal(stubs.mkdirp.sync.args[idx + 1][0], path.resolve('/sandbox/features', path.dirname(feature)));
         });
     });
 
@@ -127,25 +133,29 @@ describe('nightwatch-yadda', function () {
             features: 'path/to/steps/**'
         });
         featuresArray.forEach(function (feature, idx) {
-            assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][0], path.resolve(__dirname, '../../../lib/templates/nightwatch-yadda-wrapper-template.txt'));
-            assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][1], path.resolve('lib/sandbox/features/', path.dirname(feature),  features[feature] + '.js'));
+            assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][0], '/templates/nightwatch-yadda-wrapper-template.txt');
+            assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][1], path.resolve('/sandbox/features/', path.dirname(feature),  features[feature] + '.js'));
             assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[idx + 1][2], {
-                '{feature_location}': path.resolve(feature)
+                '{feature_location}': path.resolve(stubs['./paths'].PROJ_PATH, feature),
+                '{ny_path}': stubs['./paths'].NY_PATH
             });
         });
     });
 
     describe('nightwatch runner', function () {
-
+        var options = {
+            config: '/sandbox/nightwatch.json',
+            env: '__PHANTOMJS__'
+        };
         beforeEach(function () {
-            testee({});
+            testee(options);
         });
 
         it('should call with correct config', function () {
             assert.equal(stubs.nightwatch.runner.callCount, 1);
             assert.deepEqual(stubs.nightwatch.runner.args[0][0], {
-                config: path.resolve(__dirname, '../../../lib/sandbox/nightwatch.json'),
-                env: 'PHANTOMJS'
+                config: options.config,
+                env: options.env
             });
             assert.deepEqual(stubs.nightwatch.runner.args[0][2], {});
         });
@@ -158,7 +168,7 @@ describe('nightwatch-yadda', function () {
 
             it('should call rimraf.sync to clear out sandbox folder', function () {
                 assert.equal(stubs.rimraf.sync.callCount, 1);
-                assert.equal(stubs.rimraf.sync.args[0][0], path.resolve(__dirname, '../../../lib/sandbox'));
+                assert.equal(stubs.rimraf.sync.args[0][0], '/sandbox');
             });
 
             it('should call done callback', function () {
@@ -170,13 +180,13 @@ describe('nightwatch-yadda', function () {
 
     describe('LOCALISATIONS', function () {
         it('should have localisation options available', function () {
-            assert.deepEqual(testee.LOCALISATIONS, stubs['./options/localisation']);
+            assert.deepEqual(testee.LOCALISATIONS, stubs['./options/localisation'].options);
         });
     });
 
     describe('BROWSERS', function () {
         it('should have browser options available', function () {
-            assert.deepEqual(testee.BROWSERS, stubs['./options/browser']);
+            assert.deepEqual(testee.BROWSERS, stubs['./options/browser'].options);
         });
     });
 

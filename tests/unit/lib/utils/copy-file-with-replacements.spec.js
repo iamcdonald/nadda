@@ -6,7 +6,7 @@ var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
     sinon = require('sinon');
 
-describe('copy-file-with-replacement', function () {
+describe('utils/copy-file-with-replacement', function () {
 
     var testee,
         stubs = {};

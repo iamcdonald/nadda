@@ -11,6 +11,7 @@
   },
   "test_settings": {
     "__PHANTOMJS__": {
+        "desiredCapabilities": {}
     }
   }
 }
