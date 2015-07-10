@@ -14,7 +14,7 @@ describe('nightwatch-yadda integration', function () {
     var processExitStub = sinon.stub(process, 'exit');
     before(function () {
         console.log('bef');
-        require('../../lib/driver-setup');
+        require('../../../lib/driver-setup');
     });
 
     after(function () {
@@ -39,7 +39,7 @@ describe('nightwatch-yadda integration', function () {
                     reject: stubs.deferReject
                 })
             };
-            testee = proxyquire('../../lib/nightwatch-yadda', stubs);
+            testee = proxyquire('../../../lib/nightwatch-yadda', stubs);
             testee();
             nightwatchCallback = stubs.nightwatch.runner.args[0][1];
         });
@@ -103,7 +103,7 @@ describe('nightwatch-yadda integration', function () {
         it('should call nightwatch.runner with the correct config', function () {
             assert.equal(stubs.nightwatch.runner.callCount, 1);
             assert.deepEqual(stubs.nightwatch.runner.args[0][0], {
-                config:path.resolve(__dirname, '../../lib/sandbox/nightwatch.json'),
+                config:path.resolve(__dirname, '../../../lib/sandbox/nightwatch.json'),
                 env: testee.BROWSERS.PHANTOMJS
             });
         });
@@ -114,7 +114,7 @@ describe('nightwatch-yadda integration', function () {
             callback();
             assert.equal(stubs.deferResolve.callCount, 1);
             assert.equal(rimrafSpy.callCount, 1);
-            assert.equal(rimrafSpy.args[0][0], path.resolve(__dirname, '../../lib/sandbox'));
+            assert.equal(rimrafSpy.args[0][0], path.resolve(__dirname, '../../../lib/sandbox'));
             rimrafSpy.restore();
         });
     });
@@ -122,9 +122,9 @@ describe('nightwatch-yadda integration', function () {
     describe('passed options', function () {
         var testee,
             stubs = {},
-            featuresPath = 'tests/integration/fixture/**/*.feature',
-            stepsPath = 'tests/integration/fixture/**/*.steps.js',
-            configPath = './tests/integration/fixture/ext-nightwatch.json',
+            featuresPath = 'tests/integration/lib/fixture/**/*.feature',
+            stepsPath = 'tests/integration/lib/fixture/**/*.steps.js',
+            configPath = './tests/integration/lib/fixture/ext-nightwatch.json',
             nightwatchCallback;
 
         beforeEach(function () {
@@ -139,7 +139,7 @@ describe('nightwatch-yadda integration', function () {
                     reject: stubs.deferReject
                 })
             };
-            testee = proxyquire('../../lib/nightwatch-yadda', stubs);
+            testee = proxyquire('../../../lib/nightwatch-yadda', stubs);
             testee({
                 features: featuresPath,
                 steps: stepsPath,
@@ -209,7 +209,7 @@ describe('nightwatch-yadda integration', function () {
         it('should call nightwatch.runner with the correct config', function () {
             assert.equal(stubs.nightwatch.runner.callCount, 1);
             assert.deepEqual(stubs.nightwatch.runner.args[0][0], {
-                config: path.resolve(__dirname, '../../lib/sandbox/nightwatch.json'),
+                config: path.resolve(__dirname, '../../../lib/sandbox/nightwatch.json'),
                 env: testee.BROWSERS.IE
             });
         });
@@ -220,7 +220,7 @@ describe('nightwatch-yadda integration', function () {
             callback();
             assert.equal(stubs.deferResolve.callCount, 1);
             assert.equal(rimrafSpy.callCount, 1);
-            assert.equal(rimrafSpy.args[0][0], path.resolve(__dirname, '../../lib/sandbox'));
+            assert.equal(rimrafSpy.args[0][0], path.resolve(__dirname, '../../../lib/sandbox'));
             rimrafSpy.restore();
         });
     });
