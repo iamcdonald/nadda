@@ -64,5 +64,4 @@ if (argv.e) {
 if (argv.c) {
     options.config = argv.c;
 }
-
 nightwatchYadda(options);

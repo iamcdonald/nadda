@@ -3,7 +3,7 @@
 'use strict';
 
 var assert = require('assert'),
-    proxyquire = require('proxyquire').noCallThru().noPreserveCache(),
+    proxyquire = require('proxyquire').noCallThru(),
     path = require('path'),
     sinon = require('sinon');
 

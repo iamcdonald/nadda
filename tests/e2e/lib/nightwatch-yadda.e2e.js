@@ -26,14 +26,13 @@ describe('nightwatch-yadda e2e', function () {
     });
 
     it('should run the features correctly', function (done) {
-
+        this.timeout(100000);
         function callback() {
             assert.equal(glob.sync('tests/e2e/reports/**/*.xml').length, 1);
             rimraf.sync(path.resolve('tests/e2e/reports'));
             done();
         }
 
-        this.timeout(100000);
         assert.doesNotThrow(function () {
             nightwatchYadda({
                 features: 'tests/e2e/lib/fixture/**/*.feature',
