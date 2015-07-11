@@ -1,6 +1,7 @@
 /node_modules
 selenium-debug.log
 npm-debug.log
+phantomjsdriver.log
 /lib/nightwatch-default.json
 /lib/sandbox
 /coverage
