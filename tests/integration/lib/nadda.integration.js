@@ -1,7 +1,5 @@
 /* global before, after, describe, it, beforeEach, afterEach */
 
-'use strict';
-
 var assert = require('assert'),
     fs = require('fs'),
     proxyquire = require('proxyquire'),

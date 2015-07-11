@@ -1,7 +1,5 @@
 /* global describe, it, beforeEach, xit */
 
-'use strict';
-
 var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
     path = require('path'),

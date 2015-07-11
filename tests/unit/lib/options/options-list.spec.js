@@ -1,7 +1,5 @@
 /* global describe, it, beforeEach */
 
-'use strict';
-
 var assert = require('assert'),
     OptionsList = require('../../../../lib/options/options-list');
 

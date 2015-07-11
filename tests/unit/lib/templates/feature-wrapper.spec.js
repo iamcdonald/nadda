@@ -1,7 +1,5 @@
 /* global before, after, describe, it, beforeEach */
 
-'use strict';
-
 var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),

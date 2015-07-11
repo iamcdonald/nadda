@@ -1,7 +1,5 @@
 /* global describe, it, beforeEach */
 
-'use strict';
-
 var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
     sinon = require('sinon');
