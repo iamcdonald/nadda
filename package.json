@@ -11,7 +11,24 @@
     "integration_tests": "mocha -R spec --recursive tests/integration",
     "e2e_tests": "mocha -R spec --recursive tests/e2e"
   },
-  "author": "Iain McDonald",
+  "keywords": [
+  	"nightwatch",
+	"yadda",
+	"ci",
+	"browser",
+	"testing",
+	"selenium",
+	"chromedriver",
+	"iedriver",
+	"phantomjs",
+	"BDD",
+	"Automated",
+	"Acceptance"
+  ],
+  "author": {
+	"name": "Iain McDonald",
+	"email": "iain.allan.mcdonald@googlemail.com"
+  },
   "license": "MIT",
   "dependencies": {
     "chromedriver": "^2.16.0",
