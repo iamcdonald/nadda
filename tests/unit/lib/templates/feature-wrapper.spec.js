@@ -10,7 +10,7 @@ var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
     sinon = require('sinon');
 
-describe('templates/nightwatch-yadda-wrapper', function () {
+describe('templates/feature-wrapper', function () {
 
     var testee,
         stubs = {},
@@ -19,8 +19,8 @@ describe('templates/nightwatch-yadda-wrapper', function () {
 
     before(function () {
         fs.mkdirSync(path.resolve(__dirname, 'sandbox'));
-        copyFileWithReplacements(path.resolve(__dirname, '../../../../lib/templates/nightwatch-yadda-wrapper-template.txt'),
-                                path.resolve(__dirname, 'sandbox/nightwatch-yadda-wrapper.js'),
+        copyFileWithReplacements(path.resolve(__dirname, '../../../../lib/templates/feature-wrapper-template.txt'),
+                                path.resolve(__dirname, 'sandbox/feature-wrapper.js'),
                                 {
                                     '{feature_location}': featureFilePath,
                                     '{ny_path}': NY_PATH
@@ -36,7 +36,7 @@ describe('templates/nightwatch-yadda-wrapper', function () {
             readFileSync: sinon.stub().returns('a feature'),
             writeFileSync: sinon.stub()
         };
-        stubs['/sandbox/yadda-lib'] = {
+        stubs['/sandbox/steps-lib'] = {
             yadda: sinon.stub()
         };
         stubs.featureParserParse = sinon.stub().returns({
@@ -58,7 +58,7 @@ describe('templates/nightwatch-yadda-wrapper', function () {
                 }
             }
         };
-        testee = proxyquire('./sandbox/nightwatch-yadda-wrapper', stubs);
+        testee = proxyquire('./sandbox/feature-wrapper', stubs);
     });
 
     it('should read feature file', function () {
@@ -76,10 +76,10 @@ describe('templates/nightwatch-yadda-wrapper', function () {
         var scenarios = stubs.featureParserParse().scenarios;
         scenarios.forEach(function (scenario) {
             testee[scenario.title]('browser');
-            assert.equal(stubs['/sandbox/yadda-lib'].yadda.callCount, 1);
-            assert.equal(stubs['/sandbox/yadda-lib'].yadda.args[0][0], scenario.steps);
-            assert.equal(stubs['/sandbox/yadda-lib'].yadda.args[0][1].browser, 'browser');
-            stubs['/sandbox/yadda-lib'].yadda = sinon.stub();
+            assert.equal(stubs['/sandbox/steps-lib'].yadda.callCount, 1);
+            assert.equal(stubs['/sandbox/steps-lib'].yadda.args[0][0], scenario.steps);
+            assert.equal(stubs['/sandbox/steps-lib'].yadda.args[0][1].browser, 'browser');
+            stubs['/sandbox/steps-lib'].yadda = sinon.stub();
         });
     });
 

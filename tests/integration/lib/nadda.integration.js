@@ -9,7 +9,7 @@ var assert = require('assert'),
     path = require('path'),
     sinon = require('sinon');
 
-describe('nightwatch-yadda integration', function () {
+describe('nadda integration', function () {
 
     var processExitStub = sinon.stub(process, 'exit');
     before(function () {
@@ -39,7 +39,7 @@ describe('nightwatch-yadda integration', function () {
                     reject: stubs.deferReject
                 })
             };
-            testee = proxyquire('../../../lib/nightwatch-yadda', stubs);
+            testee = proxyquire('../../../lib/nadda', stubs);
             testee();
             nightwatchCallback = stubs.nightwatch.runner.args[0][1];
         });
@@ -92,7 +92,7 @@ describe('nightwatch-yadda integration', function () {
         });
 
         it('should create a yadda-lib file with the correct contents', function () {
-            var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/yadda-lib.js'), 'UTF-8'),
+            var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/steps-lib.js'), 'UTF-8'),
                 re;
             re = new RegExp('**/*.steps.js'.replace(/(\/|\*)/g, '\\$1'));
             assert(fileContents.match(re));
@@ -139,7 +139,7 @@ describe('nightwatch-yadda integration', function () {
                     reject: stubs.deferReject
                 })
             };
-            testee = proxyquire('../../../lib/nightwatch-yadda', stubs);
+            testee = proxyquire('../../../lib/nadda', stubs);
             testee({
                 features: featuresPath,
                 steps: stepsPath,
@@ -198,7 +198,7 @@ describe('nightwatch-yadda integration', function () {
         });
 
         it('should create a yadda-lib file with the correct contents', function () {
-            var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/yadda-lib.js'), 'UTF-8'),
+            var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/steps-lib.js'), 'UTF-8'),
                 re;
             re = new RegExp(stepsPath.replace(/(\/|\*)/g, '\\$1'));
             assert(fileContents.match(re));

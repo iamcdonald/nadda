@@ -10,29 +10,26 @@ var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
     sinon = require('sinon');
 
-describe('templates/yadda-lib', function () {
+describe('templates/steps-lib', function () {
 
     var testee,
         stubs = {},
         stepsFilePattern = 'steps/**/*.steps.js';
 
-    function createYaddaLib(localisation) {
+    function createStepsLib(localisation) {
         fs.mkdirSync(path.resolve(__dirname, 'sandbox'));
-        copyFileWithReplacements(path.resolve(__dirname, '../../../../lib/templates/yadda-lib-template.txt'),
-                                path.resolve(__dirname, 'sandbox/yadda-lib.js'),
+        copyFileWithReplacements(path.resolve(__dirname, '../../../../lib/templates/steps-lib-template.txt'),
+                                path.resolve(__dirname, 'sandbox/steps-lib.js'),
                                 {
                                     '{steps_location}': JSON.stringify(stepsFilePattern),
                                     '{localisation}': localisation
                                 });
     }
 
-    function requireYaddaLibWithStubs() {
+    function requireStepsLibWithStubs() {
         stubs.fs = {
             readFileSync: sinon.stub().returns('a feature'),
             writeFileSync: sinon.stub()
-        };
-        stubs['../yadda-lib'] = {
-            yadda: sinon.stub()
         };
         stubs.defaultLibraryDefine = sinon.stub();
         stubs.englishLibraryDefine = sinon.stub();
@@ -54,7 +51,7 @@ describe('templates/yadda-lib', function () {
                 define: stubs.defaultLibraryDefine
             }),
             Yadda: sinon.spy(function () {
-                this.title = 'Yadda Instance';
+                this.title = 'Yadda Instance with steps library';
             })
         };
 
@@ -66,7 +63,7 @@ describe('templates/yadda-lib', function () {
         files.forEach(function (file) {
             stubs[path.resolve(process.cwd(), file)] = sinon.stub();
         });
-        return proxyquire('./sandbox/yadda-lib', stubs);
+        return proxyquire('./sandbox/steps-lib', stubs);
     }
 
     function deleteYaddaLib() {
@@ -81,20 +78,20 @@ describe('templates/yadda-lib', function () {
         });
 
         it('should use default library if no localisation given', function () {
-            createYaddaLib(null);
-            var testee = requireYaddaLibWithStubs();
+            createStepsLib(null);
+            var testee = requireStepsLibWithStubs();
             assert.equal(stubs.yadda.Library.callCount, 1);
         });
 
         it('should use localisation library if localisation given - I', function () {
-            createYaddaLib('\'English\'');
-            var testee = requireYaddaLibWithStubs();
+            createStepsLib('\'English\'');
+            var testee = requireStepsLibWithStubs();
             assert.equal(stubs.yadda.localisation.English.library.callCount, 1);
         });
 
         it('should use localisation library if localisation given - II', function () {
-            createYaddaLib('\'French\'');
-            var testee = requireYaddaLibWithStubs();
+            createStepsLib('\'French\'');
+            var testee = requireStepsLibWithStubs();
             assert.equal(stubs.yadda.localisation.French.library.callCount, 1);
         });
 
@@ -104,8 +101,8 @@ describe('templates/yadda-lib', function () {
 
         var testee;
         before(function () {
-            createYaddaLib(null);
-            testee = requireYaddaLibWithStubs();
+            createStepsLib(null);
+            testee = requireStepsLibWithStubs();
         });
 
         after(function () {
@@ -133,7 +130,7 @@ describe('templates/yadda-lib', function () {
         it('should create new Yadda instance using library and return it', function () {
             assert.equal(stubs.yadda.Yadda.callCount, 1);
             assert.equal(stubs.yadda.Yadda.args[0][0].define, stubs.defaultLibraryDefine);
-            assert.equal(testee.title, 'Yadda Instance');
+            assert.equal(testee.title, 'Yadda Instance with steps library');
         });
     });
 

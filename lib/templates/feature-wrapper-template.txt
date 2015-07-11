@@ -2,7 +2,7 @@ var fs = require('fs'),
 	path = require('path'),
 	Yadda = require('yadda'),
 	NY_PATH = '{ny_path}',
-	yaddaInstance = require(path.resolve(NY_PATH, 'sandbox/yadda-lib')),
+	yaddaInstance = require(path.resolve(NY_PATH, 'sandbox/steps-lib')),
 	featureParser = new Yadda.parsers.FeatureParser(),
     feature = featureParser.parse(fs.readFileSync('{feature_location}', 'UTF-8'));
 

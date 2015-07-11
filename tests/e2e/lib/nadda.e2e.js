@@ -12,12 +12,12 @@ var assert = require('assert'),
     nightwatchYadda;
 
 
-describe('nightwatch-yadda e2e', function () {
+describe('nadda e2e', function () {
 
     before(function () {
         processExitStub = sinon.stub(process, 'exit');
         require('../../../lib/driver-setup');
-        nightwatchYadda = require('../../../lib/nightwatch-yadda');
+        nightwatchYadda = require('../../../lib/nadda');
     });
 
     after(function () {

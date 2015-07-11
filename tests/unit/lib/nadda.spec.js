@@ -8,7 +8,7 @@ var assert = require('assert'),
     sinon = require('sinon'),
     objectMerge = require('object-merge');
 
-describe('nightwatch-yadda', function () {
+describe('nadda', function () {
 
     var testee,
         stubs = {},
@@ -51,7 +51,7 @@ describe('nightwatch-yadda', function () {
             NY_PATH: '/',
             PROJ_PATH: '/'
         };
-        testee = proxyquire('../../../lib/nightwatch-yadda', stubs);
+        testee = proxyquire('../../../lib/nadda', stubs);
     });
 
     it('calls processOptions with passed in options', function () {
@@ -101,8 +101,8 @@ describe('nightwatch-yadda', function () {
             localisation: null
         };
         testee(options);
-        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][0], '/templates/yadda-lib-template.txt');
-        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][1], '/sandbox/yadda-lib.js');
+        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][0], '/templates/steps-lib-template.txt');
+        assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][1], '/sandbox/steps-lib.js');
         assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[0][2], {
             '{steps_location}': JSON.stringify(options.steps),
             '{localisation}': options.localisation
@@ -132,7 +132,7 @@ describe('nightwatch-yadda', function () {
         });
     });
 
-    it('should call copyFileWithReplacements to mirror each feature wrapped in nightwatch-yadda-wrapper with correct replacement', function () {
+    it('should call copyFileWithReplacements to mirror each feature wrapped in feature-wrapper with correct replacement', function () {
         var features = {
                 'a/path/to/feature1.feature' : 'feature1',
                 'a/path/feature2.feature': 'feature2',
@@ -151,7 +151,7 @@ describe('nightwatch-yadda', function () {
             features: 'path/to/steps/**'
         });
         featuresArray.forEach(function (feature, idx) {
-            assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][0], '/templates/nightwatch-yadda-wrapper-template.txt');
+            assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][0], '/templates/feature-wrapper-template.txt');
             assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][1], path.resolve('/sandbox/features/', path.dirname(feature),  features[feature] + '.js'));
             assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[idx + 1][2], {
                 '{feature_location}': path.resolve(stubs['./paths'].PROJ_PATH, feature),
