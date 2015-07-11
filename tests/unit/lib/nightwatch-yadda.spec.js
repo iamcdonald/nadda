@@ -40,9 +40,11 @@ describe('nightwatch-yadda', function () {
             sync: sinon.stub()
         };
         stubs.deferResolve = sinon.stub();
+        stubs.deferReject = sinon.stub();
         stubs.q = {
             defer: sinon.stub().returns({
-                resolve: stubs.deferResolve
+                resolve: stubs.deferResolve,
+                reject: stubs.deferReject
             })
         };
         stubs['./paths'] = {
@@ -67,6 +69,22 @@ describe('nightwatch-yadda', function () {
         testee();
         assert.equal(stubs.mkdirp.sync.callCount, 1);
         assert.equal(stubs.mkdirp.sync.args[0][0], '/sandbox/features');
+    });
+
+    it('def.reject called if mkdirp fails', function () {
+        stubs.mkdirp.sync.throws({
+            code: 'PROPER_FAIL'
+        });
+        testee();
+        assert.equal(stubs.deferReject.callCount, 1);
+    });
+
+    it('def.reject not called if mkdirp fails due to EEXIST', function () {
+        stubs.mkdirp.sync.throws({
+            code: 'EEXIST'
+        });
+        testee();
+        assert.equal(stubs.deferReject.callCount, 0);
     });
 
     it('calls writeSettingsFile with correct args to set up nightwatch.json file', function () {

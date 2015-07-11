@@ -1,13 +1,13 @@
 {
   "name": "nightwatch-yadda",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Facilitate running yadda tests with access to the browser via nightwatch",
   "main": "lib/nightwatch-yadda.js",
   "scripts": {
     "postinstall": "node ./lib/driver-setup.js || npm install iedriver",
-	"pretest": "jshint .",
+    "pretest": "jshint .",
     "test": "npm run unit_tests && npm run integration_tests && npm run e2e_tests",
-    "unit_tests": "mocha -R spec --recursive tests/unit",
+    "unit_tests": "istanbul cover _mocha -- -R spec --recursive tests/unit",
     "integration_tests": "mocha -R spec --recursive tests/integration",
     "e2e_tests": "mocha -R spec --recursive tests/e2e"
   },
@@ -27,6 +27,7 @@
     "yargs": "^3.15.0"
   },
   "devDependencies": {
+    "istanbul": "^0.3.17",
     "jshint": "^2.5.2",
     "mocha": "^2.2.4",
     "proxyquire": "^1.6.0",
