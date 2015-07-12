@@ -5,3 +5,4 @@ phantomjsdriver.log
 /lib/nightwatch-default.json
 /lib/sandbox
 /coverage
+/reports
