@@ -1,4 +1,4 @@
-nadda [![Build Status](https://travis-ci.org/iamcdonald/nadda.svg?branch=master)](https://travis-ci.org/iamcdonald/nadda)
+nadda [![Build Status](https://travis-ci.org/iamcdonald/nadda.svg?branch=master)](https://travis-ci.org/iamcdonald/nadda) [![Coverage Status](https://coveralls.io/repos/iamcdonald/nadda/badge.svg?branch=master&service=github)](https://coveralls.io/github/iamcdonald/nadda?branch=master)
 ===============
 
 A zero config plugin for BDD acceptance testing in the browser using a combination of
@@ -19,13 +19,13 @@ The test runner supports a number of run-time options to be passed at. To view a
 ```sh
 $ nadda --help
 ```
-| Name          | Shortname | Default       | Description                   
+| Name          | Shortname | Default       | Description
 |-------------- |-----------|---------------|-------------------------------
-| features      | f         | ```**/*.feature```  | globs to select feature files 
+| features      | f         | ```**/*.feature```  | globs to select feature files
 | steps         | s         | ```**/*.steps.js``` | globs to select steps files  
-| config        | c         |               | file path to local nightwatch.json if you want to override/add to nightwatch config 
-| localisation  | l         |               | selects the Yadda localisation library to pass to step files 
-| env           | e         | ```PHANTOMJS```     | selects the browser environment to use 
+| config        | c         |               | file path to local nightwatch.json if you want to override/add to nightwatch config
+| localisation  | l         |               | selects the Yadda localisation library to pass to step files
+| env           | e         | ```PHANTOMJS```     | selects the browser environment to use
 
 ## API
 nadda can be required into a project exposing a function which takes the same options as the command line tool and returns a promise.
@@ -43,4 +43,3 @@ nadda({
   //do something
 });
 ```
-
