@@ -11,7 +11,6 @@ describe('nadda integration', function () {
 
     var processExitStub = sinon.stub(process, 'exit');
     before(function () {
-        console.log('bef');
         require('../../../lib/driver-setup');
     });
 
@@ -89,7 +88,7 @@ describe('nadda integration', function () {
             });
         });
 
-        it('should create a yadda-lib file with the correct contents', function () {
+        it('should create a steps-lib file with the correct contents', function () {
             var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/steps-lib.js'), 'UTF-8'),
                 re;
             re = new RegExp('**/*.steps.js'.replace(/(\/|\*)/g, '\\$1'));
@@ -195,7 +194,7 @@ describe('nadda integration', function () {
             });
         });
 
-        it('should create a yadda-lib file with the correct contents', function () {
+        it('should create a steps-lib file with the correct contents', function () {
             var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/steps-lib.js'), 'UTF-8'),
                 re;
             re = new RegExp(stepsPath.replace(/(\/|\*)/g, '\\$1'));

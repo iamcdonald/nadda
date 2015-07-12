@@ -12,12 +12,12 @@ describe('runner', function () {
     function createTestee(argv) {
 
         process.argv = argv;
-        stubs['../lib/nightwatch-yadda'] = sinon.stub();
-        stubs['../lib/nightwatch-yadda'].LOCALISATIONS = {
+        stubs['../lib/nadda'] = sinon.stub();
+        stubs['../lib/nadda'].LOCALISATIONS = {
             ENGLISH: 'English',
             FRENCH: 'French'
         };
-        stubs['../lib/nightwatch-yadda'].BROWSERS = {
+        stubs['../lib/nadda'].BROWSERS = {
             CHROME: '__CHROME__',
             PHANTOMJS: '__PHANTOMJS__'
         };
@@ -26,7 +26,7 @@ describe('runner', function () {
         testee = proxyquire('../../../bin/runner', stubs);
     }
 
-    it('should call nightwatch-yadda with correct parsed options - I', function () {
+    it('should call nadda with correct parsed options - I', function () {
         var argv = ['node',
                     'command',
                     '-f', 'one/**/*.feature', 'two/**/*.feature', 'three/**/*.feature',
@@ -35,8 +35,8 @@ describe('runner', function () {
                     '-l', 'FRENCH',
                     '-e', 'CHROME'];
         createTestee(argv);
-        assert.equal(stubs['../lib/nightwatch-yadda'].callCount, 1);
-        assert.deepEqual(stubs['../lib/nightwatch-yadda'].args[0][0], {
+        assert.equal(stubs['../lib/nadda'].callCount, 1);
+        assert.deepEqual(stubs['../lib/nadda'].args[0][0], {
             features: argv.slice(3, 6),
             steps: argv.slice(7, 9),
             localisation: argv.slice(12, 13)[0],
@@ -45,7 +45,7 @@ describe('runner', function () {
         });
     });
 
-    it('should call nightwatch-yadda with correct parsed options - II', function () {
+    it('should call nadda with correct parsed options - II', function () {
         var argv = ['node',
                     'command',
                     '--features', 'c/**/*.feature', 'b/**/*.feature',
@@ -54,8 +54,8 @@ describe('runner', function () {
                     '--localisation', 'RUSSIAN',
                     '--env', 'FIREFOX'];
         createTestee(argv);
-        assert.equal(stubs['../lib/nightwatch-yadda'].callCount, 1);
-        assert.deepEqual(stubs['../lib/nightwatch-yadda'].args[0][0], {
+        assert.equal(stubs['../lib/nadda'].callCount, 1);
+        assert.deepEqual(stubs['../lib/nadda'].args[0][0], {
             features: argv.slice(3, 5),
             steps: argv.slice(6, 8),
             localisation: argv.slice(11, 12)[0],

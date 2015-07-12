@@ -12,12 +12,12 @@ describe('runner', function () {
     function createTestee(argv) {
 
         process.argv = argv || {};
-        stubs['../lib/nightwatch-yadda'] = sinon.stub();
-        stubs['../lib/nightwatch-yadda'].LOCALISATIONS = {
+        stubs['../lib/nadda'] = sinon.stub();
+        stubs['../lib/nadda'].LOCALISATIONS = {
             ENGLISH: 'English',
             FRENCH: 'French'
         };
-        stubs['../lib/nightwatch-yadda'].BROWSERS = {
+        stubs['../lib/nadda'].BROWSERS = {
             CHROME: '__CHROME__',
             PHANTOMJS: '__PHANTOMJS__'
         };
@@ -115,7 +115,7 @@ describe('runner', function () {
 
     });
 
-    it('calls nightwatchYadda with correct options taken from argv', function () {
+    it('calls nadda with correct options taken from argv', function () {
         var argv = {
                 f: ['f/1/*', 'f/2/*', 'f/4/*'],
                 s: ['steps/one/*.steps.js', 'steps/two/**/*.steps.js'],
@@ -125,7 +125,7 @@ describe('runner', function () {
             },
             options;
         createTestee(argv);
-        options = stubs['../lib/nightwatch-yadda'].args[0][0];
+        options = stubs['../lib/nadda'].args[0][0];
         assert.deepEqual(options.features, argv.f);
         assert.deepEqual(options.steps, argv.s);
         assert.equal(options.localisation, argv.l);

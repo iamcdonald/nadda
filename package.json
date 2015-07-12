@@ -1,8 +1,8 @@
 {
-  "name": "nightwatch-yadda",
+  "name": "nadda",
   "version": "0.1.0",
   "description": "Facilitate running yadda tests with access to the browser via nightwatch",
-  "main": "lib/nightwatch-yadda.js",
+  "main": "lib/nadda.js",
   "scripts": {
     "postinstall": "node ./lib/driver-setup.js || npm install iedriver",
     "pretest": "jshint .",

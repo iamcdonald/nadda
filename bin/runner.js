@@ -1,4 +1,4 @@
-var nightwatchYadda = require('../lib/nightwatch-yadda'),
+var nightwatchYadda = require('../lib/nadda'),
     argv = require('yargs')
             //version
             .alias('v', 'version')
