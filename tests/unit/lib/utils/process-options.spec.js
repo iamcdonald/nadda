@@ -136,7 +136,7 @@ describe('utils/process-options', function () {
             }, TypeError, 'Tags should be 2d array of strings, format is invalid - ' + JSON.stringify(options.tags));
         });
 
-        it('should throw TypeError if tags format is not 2d array of strings - II', function () {
+        it('should throw TypeError if tags format is not 2d array of strings - I', function () {
             var options = {
                 tags: [[['@stuff']]]
             };
@@ -154,6 +154,15 @@ describe('utils/process-options', function () {
             }, TypeError, 'Tags should be 2d array of strings, format is invalid - ' + JSON.stringify(options.tags));
         });
 
+        it('should throw TypeError if tags format is not 2d array of strings - III', function () {
+            var options = {
+                tags: [1]
+            };
+            assert.throws(function () {
+                testee(options);
+            }, TypeError, 'Tags should be 2d array of strings, format is invalid - ' + JSON.stringify(options.tags));
+        });
+
         it('should not throw TypeError if tags format is 2d array of strings', function () {
             var options = {
                 tags: [['@a', '@b'], ['~@d']]
@@ -162,6 +171,12 @@ describe('utils/process-options', function () {
                 testee(options);
             }, TypeError);
         });
+    });
+
+    it('handles being passed nothing', function () {
+        assert.doesNotThrow(function () {
+            testee();
+        }, Error);
     });
 
     it('returns processed options', function () {

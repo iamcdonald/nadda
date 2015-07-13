@@ -145,5 +145,25 @@ describe('runner', function () {
         assert.deepEqual(options.tags, [['@wip', '@feature'], ['@done']]);
     });
 
+    it('calls nadda with correct options taken from argv - single tag', function () {
+        var argv = {
+                f: ['f/1/*', 'f/2/*', 'f/4/*'],
+                s: ['steps/one/*.steps.js', 'steps/two/**/*.steps.js'],
+                l: 'English',
+                e: 'CHROME',
+                c: 'path/to/config.json',
+                t: '@wip'
+            },
+            options;
+        createTestee(argv);
+        options = stubs['../lib/nadda'].args[0][0];
+        assert.deepEqual(options.features, argv.f);
+        assert.deepEqual(options.steps, argv.s);
+        assert.equal(options.localisation, argv.l);
+        assert.equal(options.env, argv.e);
+        assert.equal(options.config, argv.c);
+        assert.deepEqual(options.tags, [['@wip']]);
+    });
+
 
 });

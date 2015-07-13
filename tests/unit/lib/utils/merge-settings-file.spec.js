@@ -33,8 +33,15 @@ describe('utils/merge-settings-file', function () {
         assert(newContent.test_settings.__PHANTOMJS__);
     });
 
+    it('should log error if problem requiring in external settings file external file', function () {
+        var consoleLogSpy = sinon.spy(console, 'log');
+        testee('tests/unit/lib/fixtures/ext-settings-bad.json');
+        assert.equal(consoleLogSpy.callCount, 1);
+        assert.equal(consoleLogSpy.args[0][0], 'Cannot find module \'/Users/wizzart/Documents/nadda/tests/unit/lib/fixtures/ext-settings-bad.json\'');
+    });
+
     it('should write file', function () {
-        testee('tests/unit/lib/fixtures/ext-settings.json');
+        testee();
         assert.equal(stubs.fs.writeFileSync.callCount, 1);
         assert.equal(stubs.fs.writeFileSync.args[0][0], '/sandbox/nightwatch.json');
         assert.equal(stubs.fs.writeFileSync.args[0][2], 'UTF-8');
