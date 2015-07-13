@@ -56,7 +56,7 @@ describe('nadda', function () {
         var options = {
             features: 'path/to/features',
             steps: 'path/to/steps',
-            tags: ['some', 'tags']
+            tags: [[]]
         };
         testee(options);
         assert.equal(stubs['./utils/process-options'].callCount, 1);
@@ -137,7 +137,11 @@ describe('nadda', function () {
                 'another/path/to/a-whole-other-feature.feature': 'a-whole-other-feature',
                 'all/the/features-are-all-here.what.feature': 'features-are-all-here'
             },
-            featuresArray = [];
+            featuresArray = [],
+            options = {
+                features: 'path/to/steps/**',
+                tags: [['~@wip'], ['@nope']]
+            };
         for (var f in features) {
             if (features.hasOwnProperty(f)) {
                 featuresArray.push(f);
@@ -145,15 +149,14 @@ describe('nadda', function () {
         }
 
         stubs['glob-all'].sync.returns(featuresArray);
-        testee({
-            features: 'path/to/steps/**'
-        });
+        testee(options);
         featuresArray.forEach(function (feature, idx) {
             assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][0], '/templates/feature-wrapper-template.txt');
             assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][1], path.resolve('/sandbox/features/', path.dirname(feature),  features[feature] + '.js'));
             assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[idx + 1][2], {
                 '{feature_location}': path.resolve(stubs['./paths'].PROJ_PATH, feature),
-                '{ny_path}': stubs['./paths'].NY_PATH
+                '{ny_path}': stubs['./paths'].NY_PATH,
+                '{tag_rules}': JSON.stringify(options.tags)
             });
         });
     });

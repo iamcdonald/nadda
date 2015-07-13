@@ -5,6 +5,7 @@ var assert = require('assert'),
     proxyquire = require('proxyquire'),
     glob = require('glob-all'),
     path = require('path'),
+    paths = require('../../../lib/paths'),
     sinon = require('sinon');
 
 describe('nadda integration', function () {
@@ -81,8 +82,12 @@ describe('nadda integration', function () {
                 }
                 assert(found);
 
-                re = new RegExp(feature);
                 fileContents = fs.readFileSync(found, 'UTF-8');
+                re = new RegExp(feature);
+                assert(fileContents.match(re));
+                re = new RegExp(paths.NY_PATH);
+                assert(fileContents.match(re));
+                re = new RegExp('[[]]');
                 assert(fileContents.match(re));
 
             });
@@ -149,7 +154,6 @@ describe('nadda integration', function () {
 
         afterEach(function () {
             nightwatchCallback();
-            //delete require.cache[]
         });
 
         it('should create a settings file with paths to drivers/selenium and external settings rolled in', function () {

@@ -23,27 +23,38 @@ describe('nadda e2e', function () {
         processExitStub.restore();
     });
 
-    it('should run the features correctly', function (done) {
+    it('should run the features correctly', function () {
         this.timeout(100000);
-        function callback() {
-            assert.equal(glob.sync('tests/e2e/reports/**/*.xml').length, 1);
-            rimraf.sync(path.resolve('tests/e2e/reports'));
-            done();
+
+        function checkReport() {
+            var report = glob.sync('tests/e2e/lib/reports/**/*.xml'),
+                reportContent,
+                re;
+
+            assert.equal(report.length, 1);
+            reportContent = fs.readFileSync(report[0], 'UTF-8');
+            re = new RegExp(/testcase name="DuckDuckGo Search for nightwatch".+assertions="3"/);
+            assert(reportContent.match(re));
+            re = new RegExp(/testcase name="DuckDuckGo Search for bower".+assertions="3"/);
+            assert(reportContent.match(re));
+            re = new RegExp(/testcase name="DuckDuckGo Search for nightwatch WIP".+assertions="0"/);
+            assert(reportContent.match(re));
+            re = new RegExp(/testcase name="DuckDuckGo Search for bower WIP".+assertions="0"/);
+            assert(reportContent.match(re));
+
         }
 
-        assert.doesNotThrow(function () {
-            nightwatchYadda({
+        return nightwatchYadda({
                 features: 'tests/e2e/lib/fixture/**/*.feature',
                 steps: 'tests/e2e/lib/fixture/**/*.steps.js',
                 localisation: nightwatchYadda.LOCALISATIONS.ENGLISH,
                 config: 'tests/e2e/lib/fixture/nightwatch.json',
-                env: nightwatchYadda.BROWSERS.PHANTOMJS
+                env: nightwatchYadda.BROWSERS.PHANTOMJS,
+                tags: ['~@wip']
             }).finally(function () {
-                assert.equal(glob.sync('tests/e2e/lib/reports/**/*.xml').length, 1);
+                checkReport();
                 rimraf.sync(path.resolve('tests/e2e/lib/reports'));
-                done();
             });
-        });
     });
 
 });
