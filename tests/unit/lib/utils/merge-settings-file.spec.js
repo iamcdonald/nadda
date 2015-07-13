@@ -38,6 +38,7 @@ describe('utils/merge-settings-file', function () {
         testee('tests/unit/lib/fixtures/ext-settings-bad.json');
         assert.equal(consoleLogSpy.callCount, 1);
         assert.equal(consoleLogSpy.args[0][0], 'Cannot find module \'' + path.resolve('tests/unit/lib/fixtures/ext-settings-bad.json') + '\'');
+        consoleLogSpy.restore();
     });
 
     it('should write file', function () {
