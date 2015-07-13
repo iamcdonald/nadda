@@ -1,8 +1,11 @@
 {
   "name": "nadda",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A zero config plugin for BDD acceptance testing in the browser using a combination of yadda and nightwatch",
   "main": "lib/nadda.js",
+  "bin": {
+  	"nadda": "./bin/nadda"
+  },
   "scripts": {
     "postinstall": "node ./lib/driver-setup.js || npm install iedriver",
     "pretest": "jshint .",
@@ -28,6 +31,13 @@
   "author": {
     "name": "Iain McDonald",
     "email": "iain.allan.mcdonald@googlemail.com"
+  },
+  "repository": {
+  	"type": "git",
+	"url": "https://github.com/iamcdonald/nadda"
+  },
+  "bugs": {
+  	"url": "https://github.com/iamcdonald/nadda/issues"
   },
   "license": "MIT",
   "dependencies": {
