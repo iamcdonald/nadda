@@ -95,6 +95,16 @@ describe('runner', function () {
             assert.equal(featuresCommand.type, 'string');
         });
 
+        it('adds t/tags command', function () {
+            var featuresCommand = stubs.yargs.options.args[0][0].t;
+            assert.equal(featuresCommand.alias, 'tags');
+            assert.equal(featuresCommand.describe, 'tags to determine which scenarios to run\n' +
+                                                '--tags ~@wip will run scenarios that don\'t have the @wip tag\n' +
+                                                '--tags ~@wip,@feature will AND the tags (running scenarios that have the @feature tag AND do not have the @wip tag)\n' +
+                                                '--tags ~@wip --tags @feature will OR the tags (running scenarios that have the @feature tag OR do not have the @wip tag)');
+            assert.equal(featuresCommand.type, 'string');
+        });
+
         it('alias\' h to help', function () {
             assert.equal(stubs.yargs.alias.args[1][0], 'h');
             assert.equal(stubs.yargs.alias.args[1][1], 'help');
@@ -121,7 +131,8 @@ describe('runner', function () {
                 s: ['steps/one/*.steps.js', 'steps/two/**/*.steps.js'],
                 l: 'English',
                 e: 'CHROME',
-                c: 'path/to/config.json'
+                c: 'path/to/config.json',
+                t: ['@wip,@feature', '@done']
             },
             options;
         createTestee(argv);
@@ -131,6 +142,7 @@ describe('runner', function () {
         assert.equal(options.localisation, argv.l);
         assert.equal(options.env, argv.e);
         assert.equal(options.config, argv.c);
+        assert.deepEqual(options.tags, [['@wip', '@feature'], ['@done']]);
     });
 
 

@@ -33,7 +33,9 @@ describe('runner', function () {
                     '-s', 'one/**/*.steps.js', 'two/*.steps.js',
                     '-c', 'path/to/config.json',
                     '-l', 'FRENCH',
-                    '-e', 'CHROME'];
+                    '-e', 'CHROME',
+                    '-t', '@wip,@feature',
+                    '-t', '@done'];
         createTestee(argv);
         assert.equal(stubs['../lib/nadda'].callCount, 1);
         assert.deepEqual(stubs['../lib/nadda'].args[0][0], {
@@ -41,7 +43,8 @@ describe('runner', function () {
             steps: argv.slice(7, 9),
             localisation: argv.slice(12, 13)[0],
             config: argv.slice(10, 11)[0],
-            env: argv.slice(14, 15)[0]
+            env: argv.slice(14, 15)[0],
+            tags: [['@wip', '@feature'],['@done']]
         });
     });
 
@@ -52,7 +55,8 @@ describe('runner', function () {
                     '--steps', 'a/b/**/*.steps.js', 'c/*.steps.js',
                     '--config', 'new/path/to/config.json',
                     '--localisation', 'RUSSIAN',
-                    '--env', 'FIREFOX'];
+                    '--env', 'FIREFOX',
+                    '--tags', '@feature'];
         createTestee(argv);
         assert.equal(stubs['../lib/nadda'].callCount, 1);
         assert.deepEqual(stubs['../lib/nadda'].args[0][0], {
@@ -60,7 +64,8 @@ describe('runner', function () {
             steps: argv.slice(6, 8),
             localisation: argv.slice(11, 12)[0],
             config: argv.slice(9, 10)[0],
-            env: argv.slice(13, 14)[0]
+            env: argv.slice(13, 14)[0],
+            tags: [['@feature']]
         });
     });
 });

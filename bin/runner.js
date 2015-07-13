@@ -36,6 +36,14 @@ var nightwatchYadda = require('../lib/nadda'),
                     alias: 'config',
                     describe: 'file path to local nightwatch.json if you want to override/add to nightwatch config',
                     type: 'string'
+                },
+                t: {
+                    alias: 'tags',
+                    describe: 'tags to determine which scenarios to run\n' +
+                            '--tags ~@wip will run scenarios that don\'t have the @wip tag\n' +
+                            '--tags ~@wip,@feature will AND the tags (running scenarios that have the @feature tag AND do not have the @wip tag)\n' +
+                            '--tags ~@wip --tags @feature will OR the tags (running scenarios that have the @feature tag OR do not have the @wip tag)',
+                    type: 'string'
                 }
             })
 
@@ -63,6 +71,14 @@ if (argv.e) {
 }
 if (argv.c) {
     options.config = argv.c;
+}
+if (argv.t) {
+    if (!Array.isArray(argv.t)) {
+        argv.t = [argv.t];
+    }
+    options.tags = argv.t.map(function (tagGroup) {
+                        return tagGroup.split(',');
+                    });
 }
 
 nightwatchYadda(options);
