@@ -1,7 +1,7 @@
 {
   "name": "nadda",
-  "version": "0.1.1",
-  "description": "Facilitate running yadda tests with access to the browser via nightwatch",
+  "version": "0.2.0",
+  "description": "A zero config plugin for BDD acceptance testing in the browser using a combination of yadda and nightwatch",
   "main": "lib/nadda.js",
   "scripts": {
     "postinstall": "node ./lib/driver-setup.js || npm install iedriver",

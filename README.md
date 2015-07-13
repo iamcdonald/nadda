@@ -15,18 +15,19 @@ nadda includes a command-line test runner to easily run a suite e.g.
 ```sh
 nadda -f tests/**/*.feature -s tests/**/*.steps.js
 ```
-The test runner supports a number of run-time options to be passed at. To view all, run the following:
+The test runner supports a number of run-time options.
+To view all, run the following:
 ```sh
 $ nadda --help
 ```
 | Name          | Shortname | Default       | Description
 |-------------- |-----------|---------------|-------------------------------
-| features      | f         | ```**/*.feature```  | globs to select feature files
-| steps         | s         | ```**/*.steps.js``` | globs to select steps files  
-| config        | c         |               | file path to local nightwatch.json if you want to override/add to nightwatch config
-| localisation  | l         |               | selects the Yadda localisation library to pass to step files
-| env           | e         | ```PHANTOMJS```     | selects the browser environment to use
-
+| features      | f         | ```**/*.feature```  | globs to select feature files.
+| steps         | s         | ```**/*.steps.js``` | globs to select steps files.  
+| config        | c         |               | file path to local nightwatch.json if you want to override/add to nightwatch config.
+| localisation  | l         |               | selects the Yadda localisation library to pass to step files.
+| env           | e         | ```PHANTOMJS```     | selects the browser environment to use.
+| tags          | t         |               | tags to determine which scenarios to run.<br>```--tags ~@wip``` <br>will run scenarios that do not have the ```@wip``` tag.<br>```--tags @wip``` <br>will run scenarios that have the ```@wip``` tag.<br>```--tags ~@wip,@feature``` <br>will run scenarios that do not have the ```@wip``` tag AND have the ```@feature``` tag. <br>```--tags ~@wip --tags @feature``` <br>will run scenarios that do not have the ```@wip``` tag OR have the ```@feature``` tag.
 ## API
 nadda can be required into a project exposing a function which takes the same options as the command line tool and returns a promise.
 A list of possible yadda localisations and environments can be found under ```nadda.LOCALISATIONS``` and ```nadda.BROWSERS``` respectively.
@@ -38,7 +39,8 @@ nadda({
   steps: 'tests/**/*.steps.js',
   config: 'path/to/nightwatch.json',
   localisation: nadda.LOCALISATIONS.ENGLISH,
-  env: nadda.BROWSERS.CHROME
+  env: nadda.BROWSERS.CHROME,
+  tags: [['~@wip', '@feature'], ['@done']]
 }).finally(function () {
   //do something
 });
