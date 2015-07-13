@@ -37,7 +37,7 @@ describe('utils/merge-settings-file', function () {
         var consoleLogSpy = sinon.spy(console, 'log');
         testee('tests/unit/lib/fixtures/ext-settings-bad.json');
         assert.equal(consoleLogSpy.callCount, 1);
-        assert.equal(consoleLogSpy.args[0][0], 'Cannot find module \'/Users/wizzart/Documents/nadda/tests/unit/lib/fixtures/ext-settings-bad.json\'');
+        assert.equal(consoleLogSpy.args[0][0], 'Cannot find module \'' + path.resolve('tests/unit/lib/fixtures/ext-settings-bad.json') + '\'');
     });
 
     it('should write file', function () {
