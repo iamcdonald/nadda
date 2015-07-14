@@ -18,8 +18,8 @@ describe('utils/merge-settings-file', function () {
         };
         stubs['../nightwatch-default.json'] = require('../fixtures/settings.json');
         stubs['../paths'] = {
-            NY_PATH: '/',
-            PROJ_PATH: process.cwd()
+            NADDA: '/',
+            PROJ: process.cwd()
         };
         testee = proxyquire('../../../../lib/utils/merge-settings-file', stubs);
     });

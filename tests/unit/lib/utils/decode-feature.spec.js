@@ -29,7 +29,7 @@ describe('utils/decode-feature', function () {
             yadda: sinon.stub()
         };
         stubs['../paths'] = {
-            NY_PATH: '/'
+            NADDA: '/'
         };
         stubs['/utils/should-run-scenario'] = sinon.stub();
         stubs.featureParserParse = sinon.stub().returns({

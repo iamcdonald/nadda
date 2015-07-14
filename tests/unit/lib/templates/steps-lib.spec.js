@@ -14,14 +14,14 @@ describe('templates/steps-lib', function () {
         stubs = {},
         stepsFilePatterns = ['steps/**/*.steps.js', '**/*.js'],
         localisation = 'English',
-        NY_PATH = '/';
+        NADDA = '/';
 
     before(function () {
         fs.mkdirSync(path.resolve(__dirname, 'sandbox'));
         copyFileWithReplacements(path.resolve(__dirname, '../../../../lib/templates/steps-lib-template.txt'),
                                 path.resolve(__dirname, 'sandbox/steps-lib.js'),
                                 {
-                                    '{ny_path}': NY_PATH,
+                                    '{nadda_path}': NADDA,
                                     '{steps_location}': JSON.stringify(stepsFilePatterns),
                                     '{localisation}': JSON.stringify(localisation)
                                 });

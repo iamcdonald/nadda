@@ -21,8 +21,8 @@ describe('driver-setup', function () {
         };
         stubs['./nightwatch-default-template.json'] = require('./fixtures/settings.json');
         stubs['./paths'] = {
-            NY_PATH: '/',
-            PROJ_PATH: process.cwd()
+            NADDA: '/',
+            PROJ: process.cwd()
         };
     });
 

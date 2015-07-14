@@ -85,7 +85,7 @@ describe('nadda integration', function () {
                 fileContents = fs.readFileSync(found, 'UTF-8');
                 re = new RegExp(feature);
                 assert(fileContents.match(re));
-                re = new RegExp(paths.NY_PATH);
+                re = new RegExp(paths.NADDA);
                 assert(fileContents.match(re));
                 re = new RegExp('[[]]');
                 assert(fileContents.match(re));

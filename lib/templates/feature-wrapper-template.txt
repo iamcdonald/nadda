@@ -1,2 +1,2 @@
 var path = require('path');
-module.exports = require(path.resolve('{ny_path}', 'utils/decode-feature'))('{feature_location}', {tag_rules});
+module.exports = require(path.resolve('{nadda_path}', 'utils/decode-feature'))('{feature_location}', {tag_rules});

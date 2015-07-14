@@ -13,7 +13,7 @@ describe('templates/feature-wrapper', function () {
     var testee,
         stubs = {},
         featureFilePath = 'dummy/path/to/feature.feature',
-        NY_PATH = '/',
+        NADDA = '/',
         tagRules = [
             ['~@1'],
             ['@2', '@3'],
@@ -26,7 +26,7 @@ describe('templates/feature-wrapper', function () {
                                 path.resolve(__dirname, 'sandbox/feature-wrapper.js'),
                                 {
                                     '{feature_location}': featureFilePath,
-                                    '{ny_path}': NY_PATH,
+                                    '{nadda_path}': NADDA,
                                     '{tag_rules}': JSON.stringify(tagRules)
                                 });
     });

@@ -46,8 +46,8 @@ describe('nadda', function () {
             })
         };
         stubs['./paths'] = {
-            NY_PATH: '/',
-            PROJ_PATH: '/'
+            NADDA: '/',
+            PROJ: '/'
         };
         testee = proxyquire('../../../lib/nadda', stubs);
     });
@@ -104,7 +104,7 @@ describe('nadda', function () {
         assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[0][2], {
             '{steps_location}': JSON.stringify(options.steps),
             '{localisation}': options.localisation,
-            '{ny_path}': stubs['./paths'].NY_PATH
+            '{nadda_path}': stubs['./paths'].NADDA
         });
     });
 
@@ -127,6 +127,7 @@ describe('nadda', function () {
             features: 'path/to/features/**'
         });
         featuresArray.forEach(function (feature, idx) {
+            console.log(stubs.mkdirp.sync.args[idx + 1][0]);
             assert.equal(stubs.mkdirp.sync.args[idx + 1][0], path.resolve('/sandbox/features', path.dirname(feature)));
         });
     });
@@ -155,8 +156,8 @@ describe('nadda', function () {
             assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][0], '/templates/feature-wrapper-template.txt');
             assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][1], path.resolve('/sandbox/features/', path.dirname(feature),  features[feature] + '.js'));
             assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[idx + 1][2], {
-                '{feature_location}': path.resolve(stubs['./paths'].PROJ_PATH, feature),
-                '{ny_path}': stubs['./paths'].NY_PATH,
+                '{feature_location}': path.resolve(stubs['./paths'].PROJ, feature),
+                '{nadda_path}': stubs['./paths'].NADDA,
                 '{tag_rules}': JSON.stringify(options.tags)
             });
         });

@@ -21,8 +21,8 @@ describe('utils/process-options', function () {
             getValue: sinon.stub({x: function(){}}, 'x', function (x) {return x;})
         };
         stubs['../paths'] = {
-            NY_PATH: '/',
-            PROJ_PATH: process.cwd()
+            NADDA: '/',
+            PROJ: process.cwd()
         };
         stubs['object-merge'] = sinon.stub({x: function(){}}, 'x', function (x, y) {return y;});
         testee = proxyquire('../../../../lib/utils/process-options', stubs);
