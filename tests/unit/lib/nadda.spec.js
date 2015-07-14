@@ -103,7 +103,8 @@ describe('nadda', function () {
         assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][1], '/sandbox/steps-lib.js');
         assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[0][2], {
             '{steps_location}': JSON.stringify(options.steps),
-            '{localisation}': options.localisation
+            '{localisation}': options.localisation,
+            '{ny_path}': stubs['./paths'].NY_PATH
         });
     });
 

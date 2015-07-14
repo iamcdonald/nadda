@@ -96,9 +96,9 @@ describe('nadda integration', function () {
         it('should create a steps-lib file with the correct contents', function () {
             var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/steps-lib.js'), 'UTF-8'),
                 re;
-            re = new RegExp('**/*.steps.js'.replace(/(\/|\*)/g, '\\$1'));
+            re = new RegExp('[\'**/*.steps.js\']');
             assert(fileContents.match(re));
-            re = new RegExp('localisation = null');
+            re = new RegExp('null');
             assert(fileContents.match(re));
         });
 
@@ -124,8 +124,8 @@ describe('nadda integration', function () {
     describe('passed options', function () {
         var testee,
             stubs = {},
-            featuresPath = 'tests/integration/lib/fixture/**/*.feature',
-            stepsPath = 'tests/integration/lib/fixture/**/*.steps.js',
+            featuresPath = ['tests/integration/lib/fixture/**/*.feature'],
+            stepsPath = ['tests/integration/lib/fixture/**/*.steps.js'],
             configPath = './tests/integration/lib/fixture/ext-nightwatch.json',
             nightwatchCallback;
 
@@ -201,7 +201,7 @@ describe('nadda integration', function () {
         it('should create a steps-lib file with the correct contents', function () {
             var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/steps-lib.js'), 'UTF-8'),
                 re;
-            re = new RegExp(stepsPath.replace(/(\/|\*)/g, '\\$1'));
+            re = new RegExp(JSON.stringify(stepsPath));
             assert(fileContents.match(re));
             re = new RegExp(testee.LOCALISATIONS.ENGLISH);
             assert(fileContents.match(re));

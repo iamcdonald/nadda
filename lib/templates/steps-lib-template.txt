@@ -1,15 +1,2 @@
-var Yadda = require('yadda'),
-    path = require('path'),
-    glob = require('glob-all'),
-    localisation = {localisation},
-    lib = localisation ? Yadda.localisation[localisation].library() : new Yadda.Library();
-
-lib.define('close_browser', function () {
-    this.browser.end();
-});
-
-glob.sync({steps_location}).forEach(function (fileName) {
-    require(path.resolve(process.cwd(), fileName))(lib);
-});
-
-module.exports = new Yadda.Yadda(lib);
+var path = require('path');
+module.exports = require(path.resolve('{ny_path}', 'utils/create-steps-lib'))({steps_location}, {localisation});
