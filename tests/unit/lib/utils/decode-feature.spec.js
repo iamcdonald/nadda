@@ -1,4 +1,4 @@
-/* global before, after, describe, it, beforeEach */
+/* global before, after, describe, xdescribe, it, beforeEach */
 
 var assert = require('assert'),
     fs = require('fs'),
@@ -34,12 +34,9 @@ describe('utils/decode-feature', function () {
         stubs['/utils/should-run-scenario'] = sinon.stub();
         stubs.featureParserParse = sinon.stub().returns({
             scenarios: Array.apply(null, {length: 6}).map(function (scenario, idx) {
-                var annotations = {};
-                annotations[idx] = true;
-                annotations[(idx + 1)] = true;
                 return {
+                    annotations: {},
                     title: 'scenario' + idx,
-                    annotations: annotations,
                     steps: Array.apply(null, {length: idx+1}).map(function (_, idx) {
                         return idx;
                     })
@@ -55,8 +52,13 @@ describe('utils/decode-feature', function () {
                 }
             }
         };
+        stubs['console.log'] = sinon.stub(console, 'log');
         testee = proxyquire('../../../../lib/utils/decode-feature', stubs);
         returnVal = testee(featureFilePath, tagRules);
+    });
+
+    afterEach(function () {
+        stubs['console.log'].restore();
     });
 
     it('should read feature file', function () {
@@ -70,6 +72,83 @@ describe('utils/decode-feature', function () {
         assert.equal(stubs.featureParserParse.args[0][0], stubs.fs.readFileSync());
     });
 
+    describe('feature title and description', function () {
+
+        describe('if feature has no title or description', function () {
+            it('should not add --Feature-- scenario', function () {
+                assert.equal(returnVal['--Feature--'], undefined);
+            });
+        });
+
+        describe('if feature has title attached', function () {
+            var featureVal;
+            beforeEach(function () {
+                featureVal = stubs.featureParserParse();
+                featureVal.title = 'A title';
+                stubs.featureParserParse.returns(featureVal);
+                returnVal = testee(featureFilePath, tagRules);
+            });
+
+            it('should add --Feature-- scenario to print title out to console', function () {
+                assert.equal(typeof returnVal['--Feature--'], 'function');
+                var browserStub = {
+                        perform: sinon.stub()
+                    };
+                returnVal['--Feature--'](browserStub);
+                assert.equal(browserStub.perform.callCount, 1);
+                browserStub.perform.args[0][0]();
+                assert.equal(stubs['console.log'].callCount, 1);
+                assert.equal(stubs['console.log'].args[0][0], featureVal.title);
+            });
+        });
+
+        describe('if feature has description attached', function () {
+            var featureVal;
+            beforeEach(function () {
+                featureVal = stubs.featureParserParse();
+                featureVal.description = ['A', 'description', 'string'];
+                stubs.featureParserParse.returns(featureVal);
+                returnVal = testee(featureFilePath, tagRules);
+            });
+
+            it('should add --Feature-- scenario to print description out to console', function () {
+                assert.equal(typeof returnVal['--Feature--'], 'function');
+                var browserStub = {
+                        perform: sinon.stub()
+                    };
+                returnVal['--Feature--'](browserStub);
+                assert.equal(browserStub.perform.callCount, 1);
+                browserStub.perform.args[0][0]();
+                assert.equal(stubs['console.log'].callCount, 1);
+                assert.equal(stubs['console.log'].args[0][0], featureVal.description.join('\n'));
+            });
+        });
+
+        describe('if feature has title and description attached', function () {
+            var featureVal;
+            beforeEach(function () {
+                featureVal = stubs.featureParserParse();
+                featureVal.title = 'A feature title';
+                featureVal.description = ['A', 'description', 'string'];
+                stubs.featureParserParse.returns(featureVal);
+                returnVal = testee(featureFilePath, tagRules);
+            });
+
+            it('should add --Feature-- scenario to print description out to console', function () {
+                assert.equal(typeof returnVal['--Feature--'], 'function');
+                var browserStub = {
+                        perform: sinon.stub()
+                    };
+                returnVal['--Feature--'](browserStub);
+                assert.equal(browserStub.perform.callCount, 1);
+                browserStub.perform.args[0][0]();
+                assert.equal(stubs['console.log'].callCount, 2);
+                assert.equal(stubs['console.log'].args[0][0], featureVal.title);
+                assert.equal(stubs['console.log'].args[1][0], featureVal.description.join('\n'));
+            });
+        });
+    });
+
     it('should export function for each scenario', function () {
         var scenarios = stubs.featureParserParse().scenarios;
         scenarios.forEach(function (scenario) {
@@ -77,39 +156,79 @@ describe('utils/decode-feature', function () {
         });
     });
 
-    it('should export function that runs scenario if it passes the tag test', function () {
-        var scenario = stubs.featureParserParse().scenarios[0],
-            scenarioFunc = returnVal[scenario.title];
+    describe('created scenario function', function () {
 
-        stubs['/utils/should-run-scenario'].returns(true);
-        scenarioFunc('browser');
-        assert.equal(stubs['/utils/should-run-scenario'].callCount, 1);
-        assert.deepEqual(stubs['/utils/should-run-scenario'].args[0][0], tagRules);
-        assert.deepEqual(stubs['/utils/should-run-scenario'].args[0][1], ['@0', '@1']);
-        assert.equal(stubs['/sandbox/steps-lib'].yadda.callCount, 1);
-        assert.equal(stubs['/sandbox/steps-lib'].yadda.args[0][0], scenario.steps);
-        assert.equal(stubs['/sandbox/steps-lib'].yadda.args[0][1].browser, 'browser');
+        describe('scenario has correct tags', function () {
+
+            var scenario;
+            beforeEach(function () {
+                featureVal = stubs.featureParserParse();
+                featureVal.scenarios[3].annotations['2'] = true;
+                featureVal.scenarios[3].annotations['3'] = true;
+                stubs.featureParserParse.returns(featureVal);
+                scenario = featureVal.scenarios[3];
+                stubs['/utils/should-run-scenario'].returns(true);
+
+            });
+
+            it('should export function that runs scenario', function () {
+                var scenarioFunc = returnVal[scenario.title],
+                    browser = {
+                        perform: sinon.stub()
+                    };
+
+                scenarioFunc(browser);
+                assert.equal(stubs['/utils/should-run-scenario'].callCount, 1);
+                assert.deepEqual(stubs['/utils/should-run-scenario'].args[0][0], tagRules);
+                assert.deepEqual(stubs['/utils/should-run-scenario'].args[0][1], ['@2', '@3']);
+                assert.equal(stubs['/sandbox/steps-lib'].yadda.callCount, scenario.steps.length);
+                for (var i = 0, l = scenario.steps.length; i < l; i++) {
+                    assert.equal(stubs['/sandbox/steps-lib'].yadda.args[i][0], scenario.steps[i]);
+                    assert.deepEqual(stubs['/sandbox/steps-lib'].yadda.args[i][1].browser, browser);
+                }
+            });
+
+            it('should log each step when running scenario except \'close_browser\'', function () {
+                var scenarioFunc = returnVal[scenario.title],
+                    browser = {
+                        perform: sinon.stub()
+                    };
+                scenarioFunc(browser);
+                for (var i = 0, l = scenario.steps.length - 1; i < l; i++) {
+                    browser.perform.args[i][0]();
+                    assert.equal(stubs['console.log'].args[i][0], '- ');
+                    assert.equal(stubs['console.log'].args[i][1], scenario.steps[i]);
+                }
+            });
+        });
+
+        describe('scenario does not have correct tags', function () {
+
+            var scenario;
+            beforeEach(function () {
+                featureVal = stubs.featureParserParse();
+                featureVal.scenarios[1].annotations['1'] = true;
+                featureVal.scenarios[1].annotations['2'] = true;
+                stubs.featureParserParse.returns(featureVal);
+                scenario = featureVal.scenarios[1];
+            });
+
+            it('should export function that logs reason for not running the scenario', function () {
+                var scenarioFunc = returnVal[scenario.title],
+                    browser = {
+                        end: sinon.stub()
+                    };
+
+                stubs['/utils/should-run-scenario'].returns(false);
+                scenarioFunc(browser);
+                assert.equal(stubs['/utils/should-run-scenario'].callCount, 1);
+                assert.deepEqual(stubs['/utils/should-run-scenario'].args[0][0], tagRules);
+                assert.deepEqual(stubs['/utils/should-run-scenario'].args[0][1], ['@1', '@2']);
+                assert.equal(stubs['console.log'].callCount, 1);
+                assert.equal(stubs['console.log'].args[0][0], 'Not running scenario due to tag rules supplied');
+                assert.equal(browser.end.callCount, 1);
+            });
+        });
     });
-
-    it('should export function that logs reason for not running the scenario if it does not pass the tag test', function () {
-        var scenario = stubs.featureParserParse().scenarios[1],
-            scenarioFunc = returnVal[scenario.title],
-            consoleLogSpy = sinon.spy(console, 'log'),
-            browser = {
-                end: sinon.stub()
-            };
-
-        stubs['/utils/should-run-scenario'].returns(false);
-        scenarioFunc(browser);
-        assert.equal(stubs['/utils/should-run-scenario'].callCount, 1);
-        assert.deepEqual(stubs['/utils/should-run-scenario'].args[0][0], tagRules);
-        assert.deepEqual(stubs['/utils/should-run-scenario'].args[0][1], ['@1', '@2']);
-        assert.equal(consoleLogSpy.callCount, 1);
-        assert.equal(consoleLogSpy.args[0][0], 'Not running scenario due to tag rules supplied');
-        assert.equal(browser.end.callCount, 1);
-        consoleLogSpy.restore();
-    });
-
-
 
 });
