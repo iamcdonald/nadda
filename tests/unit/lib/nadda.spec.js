@@ -127,7 +127,6 @@ describe('nadda', function () {
             features: 'path/to/features/**'
         });
         featuresArray.forEach(function (feature, idx) {
-            console.log(stubs.mkdirp.sync.args[idx + 1][0]);
             assert.equal(stubs.mkdirp.sync.args[idx + 1][0], path.resolve('/sandbox/features', path.dirname(feature)));
         });
     });

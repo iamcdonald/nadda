@@ -11,8 +11,8 @@ describe('driver-setup', function () {
         fileContent;
 
     beforeEach(function () {
-        stubs.processExit = sinon.stub(process, 'exit');
-        stubs.consoleLog = sinon.spy(console, 'log');
+        stubs['process.exit'] = sinon.stub(process, 'exit');
+        stubs['console.log'] = sinon.stub(console, 'log');
         stubs.fs = {
             writeFileSync: sinon.stub()
         };
@@ -27,8 +27,8 @@ describe('driver-setup', function () {
     });
 
     afterEach(function () {
-        stubs.processExit.restore();
-        stubs.consoleLog.restore();
+        stubs['process.exit'].restore();
+        stubs['console.log'].restore();
     });
 
     function loadTestee() {
@@ -93,14 +93,14 @@ describe('driver-setup', function () {
 
         it('should console.log reason for not installing iedriver', function () {
             loadTestee();
-            assert.equal(stubs.consoleLog.callCount, 1);
-            assert.equal(stubs.consoleLog.args[0][0], 'Skipping iedriver install as it is useless on darwin platform.');
+            assert.equal(stubs['console.log'].callCount, 1);
+            assert.equal(stubs['console.log'].args[0][0], 'Skipping iedriver install as it is useless on darwin platform.');
         });
 
         it('should call process.exit with false', function () {
             loadTestee();
-            assert.equal(stubs.processExit.callCount, 1);
-            assert.equal(stubs.processExit.args[0][0], false);
+            assert.equal(stubs['process.exit'].callCount, 1);
+            assert.equal(stubs['process.exit'].args[0][0], false);
         });
 
     });
@@ -127,8 +127,8 @@ describe('driver-setup', function () {
 
         it('should call process.exit with true', function () {
             loadTestee();
-            assert.equal(stubs.processExit.callCount, 1);
-            assert.equal(stubs.processExit.args[0][0], true);
+            assert.equal(stubs['process.exit'].callCount, 1);
+            assert.equal(stubs['process.exit'].args[0][0], true);
         });
     });
 });
