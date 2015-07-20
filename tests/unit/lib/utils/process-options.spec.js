@@ -36,8 +36,8 @@ describe('utils/process-options', function () {
         };
         testee(options);
         assert.equal(stubs['object-merge'].callCount, 1);
-        assert.equal(stubs['object-merge'].args[0][0].features, '**/*.feature');
-        assert.equal(stubs['object-merge'].args[0][0].steps, '**/*.steps.js');
+        assert.deepEqual(stubs['object-merge'].args[0][0].features, ['**/*.feature', '!node_modules/**/*']);
+        assert.deepEqual(stubs['object-merge'].args[0][0].steps, ['**/*.steps.js', '!node_modules/**/*']);
         assert.equal(stubs['object-merge'].args[0][1].features, options.features);
         assert.equal(stubs['object-merge'].args[0][1].steps, options.steps);
     });

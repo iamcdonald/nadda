@@ -22,8 +22,8 @@ $ nadda --help
 ```
 | Name          | Shortname | Default       | Description
 |-------------- |-----------|---------------|-------------------------------
-| features      | f         | ```**/*.feature```  | globs to select feature files.
-| steps         | s         | ```**/*.steps.js``` | globs to select steps files.  
+| features      | f         | ```['**/*.feature', '!node_modules/**/*']```  | globs to select feature files.
+| steps         | s         | ```['**/*.steps.js', '!node_modules/**/*']``` | globs to select steps files.  
 | config        | c         |               | file path to local nightwatch.json if you want to override/add to nightwatch config.
 | localisation  | l         |               | selects the Yadda localisation library to pass to step files.
 | env           | e         | ```PHANTOMJS```     | selects the browser environment to use.

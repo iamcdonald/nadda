@@ -68,9 +68,9 @@ describe('nadda integration', function () {
                 re;
 
             files = glob.sync('lib/sandbox/features/**/*.js');
-            assert.equal(files.length, 52);
+            assert.equal(files.length, 3);
 
-            features = glob.sync('**/*.feature');
+            features = glob.sync(['**/*.feature', '!node_modules/**/*']);
             features.forEach(function (feature) {
                 filename = 'lib/sandbox/features/' + feature.replace('\.feature', '.js');
                 found = false;
@@ -96,7 +96,7 @@ describe('nadda integration', function () {
         it('should create a steps-lib file with the correct contents', function () {
             var fileContents = fs.readFileSync(path.resolve('./lib/sandbox/steps-lib.js'), 'UTF-8'),
                 re;
-            re = new RegExp('[\'**/*.steps.js\']');
+            re = new RegExp('[\'**/*.steps.js\', \`!node_modules/**/*\`]');
             assert(fileContents.match(re));
             re = new RegExp('null');
             assert(fileContents.match(re));
