@@ -37,9 +37,9 @@ describe('nadda e2e', function () {
             assert(reportContent.match(re));
             re = new RegExp(/testcase name="DuckDuckGo Search for bower".+assertions="3"/);
             assert(reportContent.match(re));
-            re = new RegExp(/testcase name="DuckDuckGo Search for nightwatch WIP".+assertions="0"/);
+            re = new RegExp(/testcase name="DuckDuckGo Search for swift".+assertions="0"/);
             assert(reportContent.match(re));
-            re = new RegExp(/testcase name="DuckDuckGo Search for bower WIP".+assertions="0"/);
+            re = new RegExp(/testcase name="DuckDuckGo Search for js".+assertions="0"/);
             assert(reportContent.match(re));
 
         }

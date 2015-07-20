@@ -18,13 +18,6 @@ Scenario: DuckDuckGo Search for [Type]
         nightwatch | Night Watch
         bower | bower.io
 @wip
-Scenario: DuckDuckGo Search for [Type] WIP
-
-    When I type in [Type]
-    And I click search
-    Then '[Expected]' exists in the page
-
-    Where:
-        Type | Expected
-        nightwatch | Night Watch
-        bower | bower.io
+        swift | developer.apple.com/swift/
+@wip
+        js | JavaScript
