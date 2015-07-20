@@ -1,5 +1,7 @@
 /* global describe, it, beforeEach */
 
+'use strict';
+
 var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
     path = require('path'),
@@ -9,8 +11,7 @@ var assert = require('assert'),
 describe('nadda', function () {
 
     var testee,
-        stubs = {},
-        spies = {};
+        stubs = {};
 
     stubs['object-merge'] = sinon.spy(objectMerge);
     beforeEach(function () {

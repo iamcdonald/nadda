@@ -1,5 +1,7 @@
 /* global before, after, describe, it, beforeEach, afterEach */
 
+'use strict';
+
 var assert = require('assert'),
     fs = require('fs'),
     proxyquire = require('proxyquire'),
@@ -49,6 +51,7 @@ describe('nadda integration', function () {
 
         it('should create a settings file with paths to drivers/selenium and external settings rolled in', function () {
             var settings = require(path.resolve('./lib/sandbox/nightwatch.json'));
+            /*jshint camelcase:false */
             assert(settings.selenium.server_path);
             assert(settings.selenium.cli_args['webdriver.chrome.driver']);
             if (process.platform === 'win32') {
@@ -56,11 +59,11 @@ describe('nadda integration', function () {
             }
             assert.equal(settings.selenium.port, 4444);
             assert(settings.test_settings);
+            /*jshint camelcase:true */
         });
 
         it('should create a file for each feature with the correct contents', function () {
-            var done = sinon.stub(),
-                files,
+            var files,
                 features,
                 filename,
                 found,
@@ -158,6 +161,7 @@ describe('nadda integration', function () {
 
         it('should create a settings file with paths to drivers/selenium and external settings rolled in', function () {
             var settings = require(path.resolve('./lib/sandbox/nightwatch.json'));
+            /*jshint camelcase:false */
             assert(settings.selenium.server_path);
             assert(settings.selenium.cli_args['webdriver.chrome.driver']);
             if (process.platform === 'win32') {
@@ -165,11 +169,11 @@ describe('nadda integration', function () {
             }
             assert.equal(settings.selenium.port, 6655);
             assert(settings.test_settings.default);
+            /*jshint camelcase:true */
         });
 
         it('should create a file for each feature with the correct contents', function () {
-            var done = sinon.stub(),
-                files,
+            var files,
                 features,
                 filename,
                 found,

@@ -1,4 +1,6 @@
-/* global describe, it, beforeEach, afterEach, before, after */
+/* global describe, it, before, after */
+
+'use strict';
 
 var assert = require('assert'),
     fs = require('fs'),

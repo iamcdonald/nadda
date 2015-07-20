@@ -1,10 +1,8 @@
-/* global before, after, describe, xdescribe, it, beforeEach */
+/* global describe, it, beforeEach, afterEach */
+
+'use strict';
 
 var assert = require('assert'),
-    fs = require('fs'),
-    path = require('path'),
-    rimraf = require('rimraf'),
-    copyFileWithReplacements = require('../../../../lib/utils/copy-file-with-replacements'),
     proxyquire = require('proxyquire').noCallThru(),
     sinon = require('sinon');
 
@@ -160,7 +158,8 @@ describe('utils/decode-feature', function () {
 
         describe('scenario has correct tags', function () {
 
-            var scenario;
+            var scenario,
+                featureVal;
             beforeEach(function () {
                 featureVal = stubs.featureParserParse();
                 featureVal.scenarios[3].annotations['2'] = true;
@@ -204,7 +203,8 @@ describe('utils/decode-feature', function () {
 
         describe('scenario does not have correct tags', function () {
 
-            var scenario;
+            var scenario,
+                featureVal;
             beforeEach(function () {
                 featureVal = stubs.featureParserParse();
                 featureVal.scenarios[1].annotations['1'] = true;

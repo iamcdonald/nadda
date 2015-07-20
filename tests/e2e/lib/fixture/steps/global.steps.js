@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(lib) {
   lib
     .given(/I visit (http:\/\/\w+\.\w+\.\w+)/, function (url) {

@@ -1,5 +1,7 @@
 /* global describe, it, beforeEach, afterEach */
 
+'use strict';
+
 var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
     path = require('path'),
@@ -35,11 +37,12 @@ describe('driver-setup', function () {
         proxyquire('../../../lib/driver-setup', stubs);
         fileContent = JSON.parse(stubs.fs.writeFileSync.args[0][1]);
     }
-
     describe('all platforms', function () {
         it('should set paths as undefined if selenium driver does not exist', function () {
             loadTestee();
+            /*jshint camelcase:false */
             assert.equal(fileContent.selenium.server_path, '');
+            /*jshint camelcase:true */
         });
 
         it('should correctly add selenium server path if available', function () {
@@ -48,19 +51,25 @@ describe('driver-setup', function () {
                             .withArgs('/node_modules/selenium-standalone-wrapper/*.jar')
                             .returns([seleniumPath]);
             loadTestee();
+            /*jshint camelcase:false */
             assert.equal(fileContent.selenium.server_path, seleniumPath);
+            /*jshint camelcase:true */
         });
 
         it('should correctly add chrome driver path if available', function () {
             loadTestee();
+            /*jshint camelcase:false */
             assert.equal(fileContent.selenium.cli_args['webdriver.chrome.driver'],
                             '/node_modules/chromedriver/bin/chromedriver');
+            /*jshint camelcase:true */
         });
 
         it('should correctly add phantomjs driver path if available', function () {
             loadTestee();
+            /*jshint camelcase:false */
             assert.equal(fileContent.test_settings.__PHANTOMJS__.desiredCapabilities['phantomjs.binary.path'],
                             '/node_modules/phantomjs/bin/phantomjs');
+            /*jshint camelcase:true */
         });
 
         it('should write file', function () {
@@ -88,7 +97,9 @@ describe('driver-setup', function () {
 
         it('should remove __IE__ property from test_settings', function () {
             loadTestee();
+            /*jshint camelcase:false */
             assert(!fileContent.test_settings.__IE__);
+            /*jshint camelcase:true */
         });
 
         it('should console.log reason for not installing iedriver', function () {
@@ -122,7 +133,9 @@ describe('driver-setup', function () {
 
         it('should correctly add ie driver path if available', function () {
             loadTestee();
+            /*jshint camelcase:false */
             assert.equal(fileContent.selenium.cli_args['webdriver.ie.driver'], path.resolve('/node_modules/iedriver/bin/iedriver'));
+            /*jshint camelcase:true */
         });
 
         it('should call process.exit with true', function () {

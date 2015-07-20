@@ -1,3 +1,5 @@
+'use strict';
+
 var nightwatchYadda = require('../lib/nadda'),
     argv = require('yargs')
             //version

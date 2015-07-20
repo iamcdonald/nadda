@@ -1,8 +1,9 @@
-/* global describe, it, beforeEach, xit */
+/* global describe, it, beforeEach */
+
+'use strict';
 
 var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
-    path = require('path'),
     sinon = require('sinon');
 
 describe('utils/process-options', function () {
@@ -13,7 +14,7 @@ describe('utils/process-options', function () {
         stubs['../options/localisation'] = {
             options: {ENGLISH: 'English'},
             isValid: sinon.stub().returns(true),
-            getValue: sinon.stub({x: function(x){}}, 'x', function (x) {return x;})
+            getValue: sinon.stub({x: function(){}}, 'x', function (x) {return x;})
         };
         stubs['../options/browser'] = {
             options: {PHANTOMJS: '__PHANTOMJS__'},

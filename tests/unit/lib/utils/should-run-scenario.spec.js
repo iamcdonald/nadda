@@ -1,5 +1,7 @@
 /* global describe, it, beforeEach */
 
+'use strict';
+
 var assert = require('assert');
 
 describe('utils/should-run-feature', function () {

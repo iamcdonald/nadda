@@ -1,4 +1,6 @@
-/* global describe, it, beforeEach, xit */
+/* global describe, it, beforeEach */
+
+'use strict';
 
 var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
@@ -27,10 +29,12 @@ describe('utils/merge-settings-file', function () {
     it('should merge in external file', function () {
         testee('tests/unit/lib/fixtures/ext-settings.json');
         var newContent = JSON.parse(stubs.fs.writeFileSync.args[0][1]);
+        /*jshint camelcase:false */
         assert.equal(typeof newContent.test_settings, 'object');
         assert.equal(newContent.selenium.port, 5555);
         assert.equal(newContent.test_settings.default.selenium_port, 5555);
         assert(newContent.test_settings.__PHANTOMJS__);
+        /*jshint camelcase:true */
     });
 
     it('should log error if problem requiring in external settings file external file', function () {
