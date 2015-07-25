@@ -14,7 +14,7 @@ describe('driver-setup', function () {
 
     beforeEach(function () {
         stubs['process.exit'] = sinon.stub(process, 'exit');
-        stubs['console.log'] = sinon.stub(console, 'log');
+        stubs['console.log'] = sinon.spy(console, 'log');
         stubs.fs = {
             writeFileSync: sinon.stub()
         };

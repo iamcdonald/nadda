@@ -30,16 +30,24 @@ describe('utils/decode-feature', function () {
             NADDA: '/'
         };
         stubs['/utils/should-run-scenario'] = sinon.stub();
+        stubs['object-merge'] = sinon.stub({x: function(){}}, 'x', function (f, s) {return s;});
         stubs.featureParserParse = sinon.stub().returns({
             scenarios: Array.apply(null, {length: 6}).map(function (scenario, idx) {
+                var annotations = {};
+                annotations[idx] = true;
+                annotations[idx + 1] = true;
                 return {
-                    annotations: {},
+                    annotations: annotations,
                     title: 'scenario' + idx,
                     steps: Array.apply(null, {length: idx+1}).map(function (_, idx) {
                         return idx;
                     })
                 };
-            })
+            }),
+            annotations: {
+                'one': 1,
+                'two': 2
+            }
         });
         stubs.yadda = {
             parsers: {
@@ -50,7 +58,7 @@ describe('utils/decode-feature', function () {
                 }
             }
         };
-        stubs['console.log'] = sinon.stub(console, 'log');
+        stubs['console.log'] = sinon.spy(console, 'log');
         testee = proxyquire('../../../../lib/utils/decode-feature', stubs);
         returnVal = testee(featureFilePath, tagRules);
     });
@@ -147,10 +155,19 @@ describe('utils/decode-feature', function () {
         });
     });
 
+    it('should merge feature and scenario annotations giving presedence to scenario', function () {
+        var scenarios = stubs.featureParserParse().scenarios,
+            featureAnnotations = stubs.featureParserParse().annotations;
+        scenarios.forEach(function (scenario, idx) {
+            assert.equal(stubs['object-merge'].args[idx][0], featureAnnotations);
+            assert.equal(stubs['object-merge'].args[idx][1], scenario.annotations);
+        });
+    });
+
     it('should export function for each scenario', function () {
         var scenarios = stubs.featureParserParse().scenarios;
         scenarios.forEach(function (scenario) {
-            assert.equal(typeof returnVal[scenario.title], 'function');
+            assert.deepEqual(typeof returnVal[scenario.title], 'function');
         });
     });
 
@@ -162,8 +179,10 @@ describe('utils/decode-feature', function () {
                 featureVal;
             beforeEach(function () {
                 featureVal = stubs.featureParserParse();
-                featureVal.scenarios[3].annotations['2'] = true;
-                featureVal.scenarios[3].annotations['3'] = true;
+                featureVal.scenarios[3].annotations = {
+                    '2': true,
+                    '3': true
+                };
                 stubs.featureParserParse.returns(featureVal);
                 scenario = featureVal.scenarios[3];
                 stubs['/utils/should-run-scenario'].returns(true);
