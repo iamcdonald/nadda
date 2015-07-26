@@ -45,3 +45,18 @@ nadda({
   //do something
 });
 ```
+### Writing Yadda Steps
+Step files should be written as CommonJS modules exporting a single function that will, at runtime, be passed a yadda library (the type of which can be defined using the 'localisation' option) on which to register steps e.g.
+```js
+module.exports = function (lib) {
+    lib.when(/I type in (\w*)/, function (searchTerm) {
+        this.browser.setValue('input#search_form_input_homepage', searchTerm);
+    })
+    .when('I click search', function () {
+        this.browser.waitForElementVisible('input#search_button_homepage', 1000)
+            .click('input#search_button_homepage')
+            .pause(1000);
+    });
+};
+```
+Each step itself has access to the nightwatch browser object (```this.browser```) and a context object (```this.ctx```). The context object can be used to pass data between steps and is initially populated with the amalgamated annotations  (```this.ctx.annotations```) of the feature and scenario currently being run (if a feature and scenario annotation of the same name exist the scenario annotation will win out).  
