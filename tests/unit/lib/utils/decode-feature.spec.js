@@ -203,8 +203,9 @@ describe('utils/decode-feature', function () {
                 for (var i = 0, l = scenario.steps.length; i < l; i++) {
                     assert.equal(stubs['/sandbox/steps-lib'].yadda.args[i][0], scenario.steps[i]);
                     assert.deepEqual(stubs['/sandbox/steps-lib'].yadda.args[i][1].browser, browser);
-                    assert.deepEqual(stubs['/sandbox/steps-lib'].yadda.args[i][1].ctx, {});
-                    assert.deepEqual(stubs['/sandbox/steps-lib'].yadda.args[i][1].annotations, scenario.annotations);
+                    assert.deepEqual(stubs['/sandbox/steps-lib'].yadda.args[i][1].ctx, {
+                        annotations: scenario.annotations
+                    });
                 }
             });
 
