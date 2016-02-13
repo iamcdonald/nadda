@@ -13,8 +13,12 @@ $ npm install nadda
 ## Command Line
 nadda includes a command-line test runner to easily run a suite e.g.
 ```sh
-nadda -f tests/**/*.feature -s tests/**/*.steps.js
+nadda -f 'tests/**/*.feature' -s 'tests/**/*.steps.js'
 ```
+Things to note:
+- If using globbing in paths you may need to surround in quotes to stop the OS from resolving these prior to passing to nadda.
+- Globbed file paths don't support the use of ```~```. 
+
 The test runner supports a number of run-time options.
 To view all, run the following:
 ```sh
