@@ -23,7 +23,7 @@ describe('templates/steps-lib', function () {
         copyFileWithReplacements(path.resolve(__dirname, '../../../../lib/templates/steps-lib-template.txt'),
                                 path.resolve(__dirname, 'sandbox/steps-lib.js'),
                                 {
-                                    '{nadda_path}': NADDA,
+                                    '{create_steps_location}': NADDA + 'utils/create-steps-lib',
                                     '{steps_location}': JSON.stringify(stepsFilePatterns),
                                     '{localisation}': JSON.stringify(localisation)
                                 });

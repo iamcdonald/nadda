@@ -1,4 +1,4 @@
 'use strict';
 
 var path = require('path');
-module.exports = require(path.resolve('{nadda_path}', 'utils/decode-feature'))('{feature_location}', {tag_rules});
+module.exports = require(path.resolve('{decode_feature_location}'))('{feature_location}', {tag_rules});

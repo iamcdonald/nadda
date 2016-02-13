@@ -1,4 +1,4 @@
 'use strict';
 
 var path = require('path');
-module.exports = require(path.resolve('{nadda_path}', 'utils/create-steps-lib'))({steps_location}, {localisation});
+module.exports = require(path.resolve('{create_steps_location}'))({steps_location}, {localisation});

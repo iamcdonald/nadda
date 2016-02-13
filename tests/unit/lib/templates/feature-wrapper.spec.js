@@ -28,7 +28,7 @@ describe('templates/feature-wrapper', function () {
                                 path.resolve(__dirname, 'sandbox/feature-wrapper.js'),
                                 {
                                     '{feature_location}': featureFilePath,
-                                    '{nadda_path}': NADDA,
+                                    '{decode_feature_location}': NADDA + 'utils/decode-feature',
                                     '{tag_rules}': JSON.stringify(tagRules)
                                 });
     });

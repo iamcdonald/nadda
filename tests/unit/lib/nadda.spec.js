@@ -21,7 +21,7 @@ describe('nadda', function () {
         stubs['./utils/merge-settings-file'] = sinon.stub();
         stubs['./utils/copy-file-with-replacements'] = sinon.stub();
         stubs['./utils/process-options'] = sinon.stub({x: function () {}}, 'x', function (options) {
-            return options || {};
+            return options || { steps: [] };
         });
         stubs['./options/localisation'] = {
             options: {ENGLISH: 'English'}
@@ -96,16 +96,17 @@ describe('nadda', function () {
 
     it('calls copyFileWithReplacements to copy steps-lib over with correct replacement', function () {
         var options = {
-            steps: 'path/to/steps/**',
+            steps: ['path/to/steps/**'],
             localisation: null
         };
         testee(options);
+        var steps = options.steps.map(function (step) { return '/' + step; });
         assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][0], '/templates/steps-lib-template.txt');
         assert.equal(stubs['./utils/copy-file-with-replacements'].args[0][1], '/sandbox/steps-lib.js');
         assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[0][2], {
-            '{steps_location}': JSON.stringify(options.steps),
+            '{steps_location}': JSON.stringify(steps),
             '{localisation}': options.localisation,
-            '{nadda_path}': stubs['./paths'].NADDA
+            '{create_steps_location}': stubs['./paths'].NADDA + 'utils/create-steps-lib'
         });
     });
 
@@ -125,7 +126,8 @@ describe('nadda', function () {
 
         stubs['glob-all'].sync.returns(featuresArray);
         testee({
-            features: 'path/to/features/**'
+            features: 'path/to/features/**',
+            steps: []
         });
         featuresArray.forEach(function (feature, idx) {
             assert.equal(stubs.mkdirp.sync.args[idx + 1][0], path.resolve('/sandbox/features', path.dirname(feature)));
@@ -142,7 +144,8 @@ describe('nadda', function () {
             featuresArray = [],
             options = {
                 features: 'path/to/steps/**',
-                tags: [['~@wip'], ['@nope']]
+                tags: [['~@wip'], ['@nope']],
+                steps: []
             };
         for (var f in features) {
             if (features.hasOwnProperty(f)) {
@@ -157,7 +160,7 @@ describe('nadda', function () {
             assert.equal(stubs['./utils/copy-file-with-replacements'].args[idx + 1][1], path.resolve('/sandbox/features/', path.dirname(feature),  features[feature] + '.js'));
             assert.deepEqual(stubs['./utils/copy-file-with-replacements'].args[idx + 1][2], {
                 '{feature_location}': path.resolve(stubs['./paths'].PROJ, feature),
-                '{nadda_path}': stubs['./paths'].NADDA,
+                '{decode_feature_location}': stubs['./paths'].NADDA + 'utils/decode-feature',
                 '{tag_rules}': JSON.stringify(options.tags)
             });
         });
@@ -166,7 +169,8 @@ describe('nadda', function () {
     describe('nightwatch runner', function () {
         var options = {
             config: '/sandbox/nightwatch.json',
-            env: '__PHANTOMJS__'
+            env: '__PHANTOMJS__',
+            steps: []
         };
         beforeEach(function () {
             testee(options);
