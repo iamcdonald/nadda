@@ -6,6 +6,7 @@ var assert = require('assert'),
     fs = require('fs'),
     path = require('path'),
     rimraf = require('rimraf'),
+    execSync = require('child_process').execSync,
     glob = require('glob-all'),
     sinon = require('sinon'),
     processExitStub,
@@ -25,26 +26,25 @@ describe('nadda e2e', function () {
         processExitStub.restore();
     });
 
+    function checkReport() {
+      var report = glob.sync('tests/e2e/lib/reports/**/*.xml'),
+        reportContent,
+        re;
+      assert.equal(report.length, 1);
+      reportContent = fs.readFileSync(report[0], 'UTF-8');
+      re = new RegExp(/testcase name="DuckDuckGo Search for nightwatch".+assertions="3"/);
+      assert(reportContent.match(re));
+      re = new RegExp(/testcase name="DuckDuckGo Search for bower".+assertions="3"/);
+      assert(reportContent.match(re));
+      re = new RegExp(/testcase name="DuckDuckGo Search for swift".+assertions="0"/);
+      assert(reportContent.match(re));
+      re = new RegExp(/testcase name="DuckDuckGo Search for js".+assertions="0"/);
+      assert(reportContent.match(re));
+
+    }
+
     it('should run the features correctly', function () {
         this.timeout(100000);
-
-        function checkReport() {
-            var report = glob.sync('tests/e2e/lib/reports/**/*.xml'),
-                reportContent,
-                re;
-
-            assert.equal(report.length, 1);
-            reportContent = fs.readFileSync(report[0], 'UTF-8');
-            re = new RegExp(/testcase name="DuckDuckGo Search for nightwatch".+assertions="3"/);
-            assert(reportContent.match(re));
-            re = new RegExp(/testcase name="DuckDuckGo Search for bower".+assertions="3"/);
-            assert(reportContent.match(re));
-            re = new RegExp(/testcase name="DuckDuckGo Search for swift".+assertions="0"/);
-            assert(reportContent.match(re));
-            re = new RegExp(/testcase name="DuckDuckGo Search for js".+assertions="0"/);
-            assert(reportContent.match(re));
-
-        }
 
         return nightwatchYadda({
                 features: 'tests/e2e/lib/fixture/**/*.feature',
@@ -57,6 +57,25 @@ describe('nadda e2e', function () {
                 checkReport();
                 rimraf.sync(path.resolve('tests/e2e/lib/reports'));
             });
+    });
+
+    it('should run the features correctly from cli', function (done) {
+        this.timeout(2000000);
+        var n = execSync('npm install . -g');
+        console.log('WHAT', n.toString());
+        n = execSync('nadda ' +
+                  '-f \'tests/e2e/lib/fixture/**/*.feature\' ' +
+                  '-s \'tests/e2e/lib/fixture/**/*.steps.js\' ' +
+                  '-l ENGLISH ' +
+                  '-c ./tests/e2e/lib/fixture/nightwatch.json ' +
+                  '-e __PHANTOMJS__ ' +
+                  '-t ~@wip');
+        console.log('WHAT', n.toString());
+        checkReport();
+        rimraf.sync(path.resolve('tests/e2e/lib/reports'));
+        n = execSync('npm uninstall . -g');
+        console.log('WHAT', n.toString());
+        done();
     });
 
 });
