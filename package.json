@@ -6,6 +6,10 @@
   "bin": {
   	"nadda": "./bin/nadda"
   },
+  "files": [
+    "lib",
+    "bin"
+  ],
   "scripts": {
     "postinstall": "node ./lib/driver-setup.js || npm install iedriver",
     "pretest": "jshint .",
