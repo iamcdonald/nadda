@@ -4,7 +4,7 @@
   "description": "A zero config plugin for BDD acceptance testing in the browser using a combination of yadda and nightwatch",
   "main": "lib/nadda.js",
   "bin": {
-  	"nadda": "./bin/nadda"
+    "nadda": "./bin/nadda"
   },
   "files": [
     "lib",
@@ -37,18 +37,18 @@
     "email": "iain.allan.mcdonald@googlemail.com"
   },
   "repository": {
-  	"type": "git",
-	"url": "https://github.com/iamcdonald/nadda"
+    "type": "git",
+    "url": "https://github.com/iamcdonald/nadda"
   },
   "bugs": {
-  	"url": "https://github.com/iamcdonald/nadda/issues"
+    "url": "https://github.com/iamcdonald/nadda/issues"
   },
   "license": "MIT",
   "dependencies": {
     "chromedriver": "^2.16.0",
     "glob-all": "^3.0.1",
     "mkdirp": "^0.5.1",
-    "nightwatch": "^0.7.6",
+    "nightwatch": "^0.8.16",
     "object-merge": "^2.5.1",
     "phantomjs": "^1.9.17",
     "q": "^1.4.1",
