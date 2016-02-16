@@ -14,7 +14,7 @@
     "postinstall": "node ./lib/driver-setup.js || npm install iedriver",
     "pretest": "jshint .",
     "test": "npm run unit_tests && npm run integration_tests && npm run e2e_tests",
-    "unit_tests": "istanbul cover _mocha -- -R spec --recursive tests/unit",
+    "unit_tests": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec --recursive tests/unit",
     "integration_tests": "mocha -R spec --recursive tests/integration",
     "e2e_tests": "mocha -R spec --recursive tests/e2e"
   },
