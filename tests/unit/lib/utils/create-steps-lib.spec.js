@@ -4,6 +4,7 @@
 
 var assert = require('assert'),
     proxyquire = require('proxyquire').noCallThru(),
+    path = require('path'),
     sinon = require('sinon');
 
 describe('utils/create-steps-lib', function () {
@@ -47,7 +48,7 @@ describe('utils/create-steps-lib', function () {
             sync: sinon.stub().returns(files)
         };
         files.forEach(function (file) {
-            stubs[file] = sinon.stub();
+            stubs[path.resolve(file)] = sinon.stub();
         });
         testee = proxyquire('../../../../lib/utils/create-steps-lib', stubs);
     });
@@ -92,8 +93,8 @@ describe('utils/create-steps-lib', function () {
 
         it('should call each step file passing in the library', function () {
             stubs['glob-all'].sync().forEach(function (file) {
-                assert.equal(stubs[file].callCount, 1);
-                assert.equal(stubs[file].args[0][0].define, stubs.defaultLibraryDefine);
+                assert.equal(stubs[path.resolve(file)].callCount, 1);
+                assert.equal(stubs[path.resolve(file)].args[0][0].define, stubs.defaultLibraryDefine);
             });
         });
 

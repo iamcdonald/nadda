@@ -1,4 +1,4 @@
 'use strict';
-
 var path = require('path');
+console.log('{decode_feature_location}', path.resolve('{decode_feature_location}'));
 module.exports = require(path.resolve('{decode_feature_location}'))('{feature_location}', {tag_rules});
