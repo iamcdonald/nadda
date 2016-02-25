@@ -62,7 +62,6 @@ describe('nadda e2e', function () {
     it('should run the features correctly from cli', function (done) {
         this.timeout(2000000);
         var n = execSync('npm install . -g');
-        console.log('WHAT', n.toString());
         n = execSync('nadda ' +
                   '-f \'tests/e2e/lib/fixture/**/*.feature\' ' +
                   '-s \'tests/e2e/lib/fixture/**/*.steps.js\' ' +
@@ -70,11 +69,9 @@ describe('nadda e2e', function () {
                   '-c ./tests/e2e/lib/fixture/nightwatch.json ' +
                   '-e __PHANTOMJS__ ' +
                   '-t ~@wip');
-        console.log('WHAT', n.toString());
         checkReport();
         rimraf.sync(path.resolve('tests/e2e/lib/reports'));
         n = execSync('npm uninstall . -g');
-        console.log('WHAT', n.toString());
         done();
     });
 

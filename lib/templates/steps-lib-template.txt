@@ -1,4 +1,3 @@
 'use strict';
 var path = require('path');
-console.log('{create_steps_location}', path.resolve('{create_steps_location}'));
 module.exports = require(path.resolve('{create_steps_location}'))({steps_location}, {localisation});
