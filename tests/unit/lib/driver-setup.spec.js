@@ -48,7 +48,7 @@ describe('driver-setup', function () {
         it('should correctly add selenium server path if available', function () {
             var seleniumPath = '/the/path/to/selenium.jar';
             stubs['glob-all'].sync
-                            .withArgs('/node_modules/selenium-standalone-wrapper/*.jar')
+                            .withArgs('/node_modules/selenium-standalone-jar/bin/*.jar')
                             .returns([seleniumPath]);
             loadTestee();
             /*jshint camelcase:false */
@@ -68,7 +68,7 @@ describe('driver-setup', function () {
             loadTestee();
             /*jshint camelcase:false */
             assert.equal(fileContent.test_settings.__PHANTOMJS__.desiredCapabilities['phantomjs.binary.path'],
-                            '/node_modules/phantomjs/bin/phantomjs');
+                            '/node_modules/phantomjs-prebuilt/bin/phantomjs');
             /*jshint camelcase:true */
         });
 
