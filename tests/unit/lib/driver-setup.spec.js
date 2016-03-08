@@ -60,7 +60,7 @@ describe('driver-setup', function () {
             loadTestee();
             /*jshint camelcase:false */
             assert.equal(fileContent.selenium.cli_args['webdriver.chrome.driver'],
-                            '/node_modules/chromedriver/bin/chromedriver');
+                            '/node_modules/chromedriver/lib/chromedriver/chromedriver');
             /*jshint camelcase:true */
         });
 
@@ -68,7 +68,7 @@ describe('driver-setup', function () {
             loadTestee();
             /*jshint camelcase:false */
             assert.equal(fileContent.test_settings.__PHANTOMJS__.desiredCapabilities['phantomjs.binary.path'],
-                            '/node_modules/phantomjs-prebuilt/bin/phantomjs');
+                            '/node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs');
             /*jshint camelcase:true */
         });
 
@@ -131,10 +131,20 @@ describe('driver-setup', function () {
             });
         });
 
+        it('should add .exe to other drivers', function () {
+          loadTestee();
+          /*jshint camelcase:false */
+          assert.equal(fileContent.test_settings.__PHANTOMJS__.desiredCapabilities['phantomjs.binary.path'],
+                          '/node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs.exe');
+          assert.equal(fileContent.selenium.cli_args['webdriver.chrome.driver'],
+                          '/node_modules/chromedriver/lib/chromedriver/chromedriver.exe');
+          /*jshint camelcase:true */
+        });
+
         it('should correctly add ie driver path if available', function () {
             loadTestee();
             /*jshint camelcase:false */
-            assert.equal(fileContent.selenium.cli_args['webdriver.ie.driver'], path.resolve('/node_modules/iedriver/bin/iedriver'));
+            assert.equal(fileContent.selenium.cli_args['webdriver.ie.driver'], path.resolve('/node_modules/iedriver/lib/iedriver/IEDriverServer.exe'));
             /*jshint camelcase:true */
         });
 
