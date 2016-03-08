@@ -66,7 +66,7 @@ describe('nadda e2e', function () {
                   '-f \'tests/e2e/lib/fixture/**/*.feature\' ' +
                   '-s \'tests/e2e/lib/fixture/**/*.steps.js\' ' +
                   '-l ENGLISH ' +
-                  '-c ./tests/e2e/lib/fixture/nightwatch.json ' +
+                  '-c tests/e2e/lib/fixture/nightwatch.json ' +
                   '-e __PHANTOMJS__ ' +
                   '-t ~@wip');
         checkReport();
