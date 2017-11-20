@@ -64,3 +64,5 @@ module.exports = function (lib) {
 };
 ```
 Each step itself has access to the nightwatch browser object (```this.browser```) and a context object (```this.ctx```). The context object can be used to pass data between steps and is initially populated with the amalgamated annotations  (```this.ctx.annotations```) of the feature and scenario currently being run (if a feature and scenario annotation of the same name exist the scenario annotation will win out).  
+
+That's all folks.
